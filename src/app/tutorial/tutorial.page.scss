@@ -1,0 +1,58 @@
+
+.welcome-card ion-img {
+    max-height: 35vh;
+    overflow: hidden;
+  }
+  
+  .welcome-card ion-card-title{
+    text-align: center;
+  }
+  
+  .citation-card ion-card-title{
+    text-align: center;
+  }
+  
+  .footer{
+    text-align: center;
+    background-image: repeating-linear-gradient(to top,rgb(197, 199, 255) 0%,rgb(182, 180, 243) 5.8%,rgb(254, 254, 254) 5.8%,rgb(253, 253, 253) 92.4%,rgb(160, 164, 233) 94%,rgb(157, 162, 238) 99.6%);
+    background-image: -ms-repeating-linear-gradient(bottom,rgb(197, 199, 255) 0%,rgb(182, 180, 243) 5.8%,rgb(254, 254, 254) 5.8%,rgb(253, 253, 253) 92.4%,rgb(160, 164, 233) 94%,rgb(157, 162, 238) 99.6%);
+  
+  }
+  
+  .logo-card {
+    height: 50px;
+    text-align: center;
+    background-image: url('/assets/ualcan-logo.jpeg') no-repeat; 
+  }
+  
+  .update{
+    text-align: center;
+  }
+  
+  ion-header{
+    background-image: repeating-linear-gradient(to top,rgb(197, 199, 255) 0%,rgb(182, 180, 243) 5.8%,rgb(254, 254, 254) 5.8%,rgb(253, 253, 253) 92.4%,rgb(160, 164, 233) 94%,rgb(157, 162, 238) 99.6%);
+    background-image: -ms-repeating-linear-gradient(bottom,rgb(197, 199, 255) 0%,rgb(182, 180, 243) 5.8%,rgb(254, 254, 254) 5.8%,rgb(253, 253, 253) 92.4%,rgb(160, 164, 233) 94%,rgb(157, 162, 238) 99.6%);
+  
+  }
+  .header-logo{
+    background-image: url('/assets/header1.png');
+  }
+  ion-header p{
+    font: 25px sans-serif;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  ion-card{
+    border: solid;
+    border-color: rgb(46, 212, 241);
+    border-width:3px;
+  }
+  
+  ion-card-title{
+    font-weight: 500;
+  }
+  
+  p{
+    color: black;
+  }

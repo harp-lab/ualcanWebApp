@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="text-align: center">
+      Analysis
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content id="containervalue">
+  <ion-card class="citation-card">
+    <form [formGroup]="form">
+      <div id="container" >
+          <ion-list>
+            <!-- My code test for cancer dropdown box-->
+            <ion-item >
+              
+              <div class="ion-padding">
+            <ion-label>Select Cancer type</ion-label>
+            <div></div>
+                <div class="dropdownstyling">
+                <select style="width: 230px; height: 40px;" formControlName="selectedCancer">  <!-- formControlName is used to capture the selected item from the dropdown-->
+                  <option *ngFor="let cancer of cancers" value ="{{cancer.id}}">{{cancer.name}}</option>
+                </select>
+              </div>
+            
+          </div>
+          </ion-item> 
+
+          <!--My code for gene autocomplete-->
+          <ion-item>
+            <div class="ion-padding">
+              <!--form [formGroup]="form"-->
+                <ion-label>Select Gene type</ion-label> 
+                <ng-select style="width: 230px; height: 40px;" [items]="genes | async" bindLabel="name" 
+                  formControlName="name" notFoundText="No records found" 
+                  [multiple]="false"
+                  appendTo="#containervalue"
+                  (keyup)="getGeneName($event)">
+                </ng-select>
+              <!--/form-->
+              
+              <!--div class="multiSelect">
+                <label>Multiselect with custom bindings</label>
+                <ng-select [items]="cities2" bindLabel="name" bindValue="name" [multiple]="true" placeholder="Select cities"
+                  [(ngModel)]="selectedCityNames">
+                </ng-select>
+                <p>
+                  Selected cities: {{selectedCityNames}}
+                </p>
+                <hr />
+              </div-->
+              <!---->
+            </div>
+          </ion-item>
+          </ion-list>
+        </div>
+      </form>
+        <div style="text-align:center">
+          <ion-button (click)='goforward()' class="searchbutton" routerDirection="forward">Search</ion-button>
+        </div>
+      </ion-card>
+
+</ion-content>

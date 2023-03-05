@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-back-button defaultHref="/HomePage">next</ion-back-button>
+    </ion-buttons>
+    <ion-title style="margin-left: 100px;">   <!--text-align:center-->
+      Plot
+    </ion-title>
+
+   
+    
+  </ion-toolbar>
+</ion-header>
+  
+  
+  <ion-content>
+    
+    
+
+    
+      <ion-card class="citation-card">
+        
+        <div id="plotTable" style="height:100%;text-align:center;overflow-y:scroll">
+          <div align="center" class="plotDiv" style="background: #cadbf7; ">
+              <div>
+                  <font id="plotTitle" size="4" face="arial"></font>
+                  <select class="customdrop" id="plotSelect" (change)="show()">
+                  </select>
+              </div>
+              <br/>
+          </div>
+        </div>
+        
+      </ion-card>
+    
+  </ion-content>
+
+  <ion-footer>
+    <ion-button style="text-align:center; margin-left: auto;" (click)="downloadInvoice()">
+      download
+    </ion-button>
+  </ion-footer>
+  
