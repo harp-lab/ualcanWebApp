@@ -31,9 +31,11 @@ export class PlotComponent implements OnInit, AfterViewInit {
 
   // pdf generator //
   downloadInvoice() {
-    //let plotTable = $('.plotTable').clone();
-    //plotTable.find(`.plotDiv[id!=container${$("#plotSelect").prop("selectedIndex")}x]`).remove();
-    this.content =  $('#plotTable').html();
+    let plotTable = $('#plotTable').clone();
+    plotTable.find(`.plotDiv[id!=container${$("#plotSelect").prop("selectedIndex")}x]`).remove();
+    this.content = plotTable.prop('outerHTML');
+    console.log(this.content);
+    //this.content =  $('#plotTable').html();
     let options = {
       documentSize: 'A3',
       type: 'share', 
