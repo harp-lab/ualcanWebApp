@@ -55,3 +55,18 @@ ion-card-title{
 p{
   color: black;
 }
+
+.text-piped span:after {
+  content: "|";
+  margin: 0 10px;
+}
+.text-piped span:last-child:after {
+  content: '';
+  margin: 0 10px;
+}
+
+.title-header {
+  padding-left: 10px;
+  background: #1E6B52;
+  color: white;
+}
