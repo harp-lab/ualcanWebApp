@@ -1,14 +1,8 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="toolbar">
     <ion-buttons slot="start">
-        <ion-back-button defaultHref="/HomePage">next</ion-back-button>
+        <ion-back-button class="backbutton" defaultHref="/HomePage">next</ion-back-button>
     </ion-buttons>
-    <ion-title style="margin-left: 100px;">   <!--text-align:center-->
-      Plot
-    </ion-title>
-
-   
-    
   </ion-toolbar>
 </ion-header>
   
@@ -26,7 +20,7 @@
     
 
     
-      <ion-card class="citation-card">
+      <ion-card id="plotCard" class="citation-card">
         
         <div id="plotTable" style="height:100%;text-align:center;overflow-y:scroll">
           <div align="center" class="plotDiv" style="background: #cadbf7; ">
@@ -81,9 +75,9 @@
     
   </ion-content>
 
-  <ion-footer>
+  <ion-footer class="footer">
     
-    <ion-button style="text-align:center; margin-left: 40%; background-color: #1E6B52;" (click)="downloadHighchart()">
+    <ion-button class="downloadbutton" (click)="downloadHighchart()">
       download
     </ion-button>
     <!--ion-button style="text-align:center; margin-left: 40%;" (click)="generateImage()">Create Image</ion-button-->

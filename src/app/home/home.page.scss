@@ -44,7 +44,7 @@ ion-header p{
 
 ion-card{
   border: solid;
-  border-color: rgb(46, 212, 241);
+  border-color: #80828580;
   border-width:3px;
 }
 
@@ -66,6 +66,7 @@ p{
 }
 
 .title-header {
+  padding-top:  env(safe-area-inset-top);
   padding-left: 10px;
   background: #1E6B52;
   color: white;
