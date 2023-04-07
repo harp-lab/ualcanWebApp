@@ -16,6 +16,12 @@
 
 
 <ion-content id="containervalue">
+  <div>
+    <a>
+      <img src="/assets/images/ualcanlogo.jpg" style="height: auto; width: auto; max-width: 180px; max-height: 70px; margin-left: 5px;"></a>
+      &nbsp;&nbsp;
+
+  </div>
   <ion-card class="citation-card">
     <form [formGroup]="form">
       <div id="container" >
@@ -39,7 +45,7 @@
           <ion-item>
             <div class="ion-padding">
               <!--form [formGroup]="form"-->
-                <ion-label>Select Gene type</ion-label> 
+                <ion-label>Enter/Select Gene</ion-label> 
                 <ng-select style="width: 230px; height: 40px;" [items]="genes | async" bindLabel="name" 
                   formControlName="name" notFoundText="No records found" 
                   [multiple]="false"
@@ -70,7 +76,7 @@
       </ion-card>
 
       <ion-footer>
-        <div style="text-align: center; color: white; padding: 15px; margin-top: 100px; background-color: #1E6B52;">
+        <div style="text-align: center; color: white; padding: 15px; margin-top: 200px; background-color: #1E6B52;">
           <div style="margin-bottom: 15px">
             
           <div style="margin-bottom: 15px">
