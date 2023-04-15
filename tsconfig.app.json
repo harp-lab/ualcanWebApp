@@ -7,7 +7,6 @@
   },
   "files": [
     "src/main.ts",
-    "src/test.ts",
     "src/zone-flags.ts",
     "src/polyfills.ts"
   ],

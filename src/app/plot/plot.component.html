@@ -1,92 +1,30 @@
-<ion-header>
+<ion-header class="title-header">
   <ion-toolbar class="toolbar">
     <ion-buttons slot="start">
-        <ion-back-button class="backbutton" defaultHref="/HomePage">next</ion-back-button>
+        <ion-back-button class="backbutton" defaultHref="/HomePage"></ion-back-button>
     </ion-buttons>
+    <div class="ualcanLogoContainer">
+        <img class="ualcanLogo" src="/assets/images/ualcanlogo.jpg">
+    </div>
   </ion-toolbar>
 </ion-header>
-  
-  
-  <ion-content>
-
-    <!--Button to compare-->
-    <!--div style="text-align:center">
-      <ion-button (click)='goforward()' class="searchbutton" routerDirection="forward">Forward plot 2</ion-button>
-    </div-->
-  
-
-    <!---->
-    <div>
-      <a>
-        <img src="/assets/images/ualcanlogo.jpg" style="height: auto; width: auto; max-width: 180px; max-height: 70px; margin-left: 5px;"></a>
-        &nbsp;&nbsp;
-  
+<ion-content class="content">
+  <ion-card id="plotCard" class="citation-card">
+    <div id="plotTable" style="height:100%;text-align:center;overflow-y:scroll">
+      <div align="center" class="plotDiv" style="background: #cadbf7; ">
+        <div>
+            <font id="plotTitle" size="4" face="arial"></font>
+            <select class="customdrop" id="plotSelect" (change)="show()"></select>
+        </div>
+        <br/>
+      </div>
     </div>
-    
-    
-
-    
-      <ion-card id="plotCard" class="citation-card">
-        
-        <div id="plotTable" style="height:100%;text-align:center;overflow-y:scroll">
-          <div align="center" class="plotDiv" style="background: #cadbf7; ">
-              <div>
-                  <font id="plotTitle" size="4" face="arial"></font>
-                  
-                    <select class="customdrop" id="plotSelect" (change)="show()">
-                    </select>
-              </div>
-              <br/>
-          </div>
-        </div>
-      
-      </ion-card>
-
-      <ion-footer>
-        <div style="text-align: center; color: white; padding: 15px; margin-top: 100px; background-color: #1E6B52;">
-          <div style="margin-bottom: 15px">
-            
-          <div style="margin-bottom: 15px">
-            <a href="https://www.uab.edu/medicine/home/heersink" target="_blank"><img style="height: auto; width: auto; max-width: 180px; max-height: 
-              70px; background-color: #1E6B52;border:1.5px solid green;" src="/assets/images/heersink.png"></a>&nbsp;&nbsp;
-          </div>
-          <div>
-            <a href="https://www.uab.edu/onealcancercenter/" target="_blank">
-              <img src="/assets/images/oneal.png" style="height: auto; width: auto; max-width: 180px; max-height: 70px;background-color: #1E6B52; 
-              border:1.5px solid green;"></a>
-              &nbsp;&nbsp;
-      
-          </div>
-            
-          </div>
-      
-          <div class="text-piped" style="margin-bottom: 15px">
-            <span><a style="color:white;" href="https://www.uab.edu/home/contact" target="_self">Contact UAB</a></span> 
-            <span><a style="color:white;" href="https://www.uab.edu/privacy" target="_blank">Privacy</a></span> 
-            <span><a style="color:white;" href="https://www.uab.edu/toolkit/web/terms-of-use" target="_blank">Terms of Use</a></span>
-            <span>© 2022 The University of Alabama at Birmingham</span>
-          </div>
-          <p style="align:center;font-weight: 120;font-size: 14px;color:white;">UAB is an Equal Opportunity/Affirmative Action Employer 
-              committed to fostering a diverse, equitable and family-friendly environment in which all faculty and staff can excel and achieve 
-              work/life balance irrespective of race, national origin, age, genetic or family medical history, gender, faith, gender identity 
-              and expression as well as sexual orientation. UAB also encourages applications from individuals with disabilities and veterans.
-          </p>
-        </div>
-        
-        </ion-footer>
-
-      
-
-    
-    
-  </ion-content>
-
-  <ion-footer class="footer">
-    
-    <button style="text-align:center; margin-left: 40%; height: 30px; width: 80px; color: white; background-color: #1E6B52;" (click)="downloadHighchart()">
-      download
-
-    </button>
-    <!--ion-button style="text-align:center; margin-left: 40%;" (click)="generateImage()">Create Image</ion-button-->
-  </ion-footer>
+  </ion-card>
+  <app-footer></app-footer>
+</ion-content>
+<ion-footer class="footer">
+  <ion-button class="downloadbutton" (click)="downloadHighchart()">
+    download
+  </ion-button>
+</ion-footer>
   

@@ -1,54 +1,13 @@
-<ion-header class="title-header">
-
-      <div>
-          <a href="https://www.uab.edu/home/"><img src="/assets/images/uabheader-1.png" height="40" style="margin-top: 10px; margin-bottom: 10px;"></a>
-          <a href="https://www.uab.edu/medicine/pathology/"><img src="/assets/images/StandardPATHlogo.jpg" style=" 
-            float:right; height: auto; width: auto; max-width: 200px; max-height: 50px; margin-right: 10px; margin-bottom: 5px; margin-top: 5px;"></a>
-        </div>
-</ion-header>
-
-<ion-content class="main-body">
-
-  <div>
-    <a>
-      <img src="/assets/images/ualcanlogo.jpg" style="height: auto; width: auto; max-width: 180px; max-height: 70px; margin-left: 5px;"></a>
-      &nbsp;&nbsp;
-
-  </div>
-
+<app-header></app-header>
+<ion-content class="main-body content">
   <ion-card class="welcome-card">
     <ion-card-header>
-        <!-- <ion-img src="/assets/ualcan-logo.jpeg"></ion-img> -->
-      <!-- <ion-card-subtitle>Get Started</ion-card-subtitle> -->
       <ion-card-title>Welcome to UALCAN</ion-card-title>
     </ion-card-header>
     <ion-card-content>
     <p>UALCAN is a comprehensive, user-friendly, and interactive web resource for analyzing cancer OMICS data. It is built on PERL-CGI with high quality graphics using javascript and CSS. UALCAN is designed to, a) provide easy access to publicly available cancer OMICS data (TCGA and MET500), b) allow users to identify biomarkers or to perform in silico validation of potential genes of interest, c) provide graphs and plots depicting gene expression and patient survival information based on gene expression, d) evaluate gene expression in molecular subtypes of breast and prostate cancer, e) evaluate epigenetic regulation of gene expression by promoter methylation and correlate with gene expression, f) perform pan-cancer gene expression analysis, and g) Provide additional information about the selected genes/targets by linking to HPRD, GeneCards, Pubmed, TargetScan, The human protein atlas, DRUGBANK, Open Targets and the GTEx. These resources allow researchers to gather valuable information and data about the genes/targets of interest.</p></ion-card-content>
     <p style="text-align: center"><a class="ion-home color-primary item" href="#" onclick="window.open('https://twitter.com/@Now_UALCAN', '_system', 'location=yes'); return false;">Follow on Twitter</a></p>
   </ion-card>
-
-  <!--ion-card class="citation-card">
-    <ion-card-header><ion-card-title>Citation</ion-card-title></ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <p>
-          1. Chandrashekar DS, Karthikeyan SK, Korla PK, Patel H, Shovon AR, Athar M, Netto GJ, Qin ZS, Kumar S, Manne U, 
-          Creighton CJ, Varambally S. UALCAN: An update to the integrated cancer data analysis platform. Neoplasia.  2022 Mar;25:18-27. doi: 10.1016/j.neo.2022.01.001
-          <a class="ion-home color-primary item" href="#" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/35078134/', '_system', 'location=yes'); return false;"> 
-            [PMID:35078134]</a>
-        </p>
-      </ion-item>
-      <ion-item>
-        <ion-label></ion-label>
-        <p>2. Chandrashekar DS, Bashel B, Balasubramanya SAH, Creighton CJ, Rodriguez IP, Chakravarthi BVSK and Varambally S. UALCAN: A portal for 
-          facilitating tumor subgroup gene expression and survival analyses. Neoplasia. 2017 Aug;19(8):649-658. doi: 10.1016/j.neo.2017.05.002
-          <a class="ion-home color-primary item" href="#" onclick="window.open('https://www.ncbi.nlm.nih.gov/pubmed/28732212', '_system', 'location=yes'); return false;"> 
-            [PMID:28732212]</a>
-        </p>
-      </ion-item>
-
-    </ion-card-content>
-  </ion-card-->
   <ion-card class="citation-card">
       <ion-card-header><ion-card-title></ion-card-title></ion-card-header>
       <ion-card-content>
@@ -56,66 +15,30 @@
       </ion-card-content>
     </ion-card>
   <ion-card class="update">
-      <ion-card-header><ion-card-title>Updates</ion-card-title></ion-card-header>
-      <ion-list lines="none">
-          <ion-item>
-            <p>06/06/2019: UALCAN now provides pan-cancer profile of unfolded protein response genes in the "Scan by gene classes" Section.</p>
-          </ion-item>
-          <ion-item>
-              <p>06/06/2019: UALCAN now provides gene expression and promoter methylation profile based on patient's alcohol consumption for Esophageal carcinoma.</p>
-            </ion-item>
-
-            <ion-item>
-                <ion-label></ion-label>
-                <p>05/10/2019: UALCAN now provides gene expression visualization across cancers (pan-cancer) for the gene of interest.</p>
-              </ion-item>
-            <ion-item>
-                <ion-label></ion-label>
-                <p>03/13/2019: UALCAN now provides gene expression based on tumor histology for Uveal Melanoma (UVM) and Pheochromocytoma and Paraganglioma (PCPG) TCGA datasets. Also user can access gene expression based on tumor grade for Cholangiocarcinoma (CHOL), Cervical squamous cell carcinoma (CESC) and Pancreatic adenocarcinoma (PAAD).</p>
-            </ion-item>
-            <a class="ion-home color-primary item" href="#" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/35078134/', '_system', 'location=yes'); return false;"> 
-              [PMID:35078134]</a>
-
-            <a class="ion-home color-primary item" href="#" onclick="window.open('https://www.ncbi.nlm.nih.gov/pubmed/28732212', '_system', 'location=yes'); return false;"> 
-              [PMID:28732212]</a>
-
-        </ion-list>
+    <ion-card-header><ion-card-title>Updates</ion-card-title></ion-card-header>
+    <ion-list lines="none">
+      <ion-item>
+        <p>06/06/2019: UALCAN now provides pan-cancer profile of unfolded protein response genes in the "Scan by gene classes" Section.</p>
+      </ion-item>
+      <ion-item>
+        <p>06/06/2019: UALCAN now provides gene expression and promoter methylation profile based on patient's alcohol consumption for Esophageal carcinoma.</p>
+      </ion-item>
+      <ion-item>
+        <ion-label></ion-label>
+        <p>05/10/2019: UALCAN now provides gene expression visualization across cancers (pan-cancer) for the gene of interest.</p>
+      </ion-item>
+      <ion-item>
+        <ion-label></ion-label>
+        <p>03/13/2019: UALCAN now provides gene expression based on tumor histology for Uveal Melanoma (UVM) and Pheochromocytoma and Paraganglioma (PCPG) TCGA datasets. Also user can access gene expression based on tumor grade for Cholangiocarcinoma (CHOL), Cervical squamous cell carcinoma (CESC) and Pancreatic adenocarcinoma (PAAD).</p>
+      </ion-item>
+        <a class="ion-home color-primary item" href="#" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/35078134/', '_system', 'location=yes'); return false;"> 
+          [PMID:35078134]</a>
+        <a class="ion-home color-primary item" href="#" onclick="window.open('https://www.ncbi.nlm.nih.gov/pubmed/28732212', '_system', 'location=yes'); return false;"> 
+          [PMID:28732212]</a>
+    </ion-list>
   </ion-card>
-
   <div style="text-align: center;">
     <a href="mailto:ualcanask@gmail.com?subject=Testing out mailto!&body=This is only a test!">Please send your queries/feedback to ualcanask at gmail dot com</a>
   </div>
-<ion-footer>
-  <div style="text-align: center; color: white; padding: 15px; margin-top: 100px; background-color: #1E6B52;">
-    <div style="margin-bottom: 15px">
-      
-    <div style="margin-bottom: 15px">
-      <a href="https://www.uab.edu/medicine/home/heersink" target="_blank"><img style="height: auto; width: auto; max-width: 180px; max-height: 
-        70px; background-color: #1E6B52;border:1.5px solid green;" src="/assets/images/heersink.png"></a>&nbsp;&nbsp;
-    </div>
-    <div>
-      <a href="https://www.uab.edu/onealcancercenter/" target="_blank">
-        <img src="/assets/images/oneal.png" style="height: auto; width: auto; max-width: 180px; max-height: 70px;background-color: #1E6B52; 
-        border:1.5px solid green;"></a>
-        &nbsp;&nbsp;
-
-    </div>
-      
-    </div>
-
-    <div class="text-piped" style="margin-bottom: 15px">
-      <span><a style="color:white;" href="https://www.uab.edu/home/contact" target="_self">Contact UAB</a></span> 
-      <span><a style="color:white;" href="https://www.uab.edu/privacy" target="_blank">Privacy</a></span> 
-      <span><a style="color:white;" href="https://www.uab.edu/toolkit/web/terms-of-use" target="_blank">Terms of Use</a></span>
-      <span>© 2022 The University of Alabama at Birmingham</span>
-    </div>
-    <p style="align:center;font-weight: 120;font-size: 14px;color:white;">UAB is an Equal Opportunity/Affirmative Action Employer 
-        committed to fostering a diverse, equitable and family-friendly environment in which all faculty and staff can excel and achieve 
-        work/life balance irrespective of race, national origin, age, genetic or family medical history, gender, faith, gender identity 
-        and expression as well as sexual orientation. UAB also encourages applications from individuals with disabilities and veterans.
-    </p>
-  </div>
-  
-  </ion-footer>
-
+  <app-footer></app-footer>
 </ion-content>

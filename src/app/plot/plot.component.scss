@@ -1,36 +1,39 @@
 .citation-card {
-    height: 95%;
-  }
+  height: 95%;
+}
 
-  ion-card{
-    border: solid;
-    border-color: #80828580;
-    border-width:3px;
-  }
+.downloadbutton{
+  --background: #144B39;
+  color: white;
+  margin-bottom: var(--ion-safe-area-bottom);
+}
 
-  
-  .text-piped span:after {
-    content: "|";
-    margin: 0 10px;
-  }
-  .text-piped span:last-child:after {
-    content: '';
-    margin: 0 10px;
-  }
+.backbutton{
+  color: #144B39;
+  margin-top: 20px;
+  margin-left: 10px;
+}
 
-  .downloadbutton{
-    --background: #808285;
-    margin-bottom: env(safe-area-inset-top);
-  }
+.toolbar {
+  --background: white;
+}
 
-  .backbutton{
-    color: white;
-  }
+.ualcanLogoContainer {
+  width: 100%;
+  text-align: right;
+}
 
-  .toolbar {
-    --background: #1E6B52;
-  }
+.title-header {
+  --background: white;
+  border: 1px solid #144B39;
+}
 
-  .footer {
-    text-align: center;
-  }
+.ualcanLogo {
+  margin-right: 15px;
+  margin-top: 5px;
+  height: auto; 
+  width: auto; 
+  max-width: 150px; 
+  max-height: 70px;
+  float: right;
+}

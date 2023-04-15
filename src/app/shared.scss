@@ -1,0 +1,61 @@
+.welcome-card ion-img {
+  max-height: 35vh;
+  overflow: hidden;
+}
+
+.welcome-card ion-card-title{
+  text-align: center;
+}
+
+.citation-card ion-card-title{
+  text-align: center;
+}
+
+.footer{
+  text-align: center;
+}
+
+.logo-card {
+  height: 50px;
+  text-align: center;
+  background-image: url('/assets/ualcan-logo.jpeg') no-repeat; 
+}
+
+.update{
+  text-align: center;
+}
+
+ion-header p{
+  font: 25px arial;
+  font-weight: bold;
+  text-align: center;
+}
+
+ion-card{
+  border: inset;
+  border-color: #144B3955;
+  border-width:1px;
+  padding: 1px;
+  margin-top: 30px;
+}
+
+ion-card-title{
+  font-weight: 500;
+}
+
+p{
+  color: black;
+}
+
+.text-piped span:after {
+  content: "|";
+  margin: 0 10px;
+}
+.text-piped span:last-child:after {
+  content: '';
+  margin: 0 10px;
+}
+
+.content {
+  --background: #144B391F;
+}

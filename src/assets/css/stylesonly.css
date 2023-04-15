@@ -14,15 +14,15 @@ h4,
 h5,
 h6 {
   padding: 0 0 0.5em 0;
-  font: normal 120% 'Droid Sans', arial, sans-serif;
+  font: normal 120% arial;
 }
 h1 {
-  font-family: 'ubuntu', serif;
+  font-family: arial;
   font-weight: normal;
   color: black;
 }
 h2 {
-  font-family: 'Droid Serif', serif;
+  font-family: arial;
   font-weight: normal;
   color: black;
   font-size: 18px;
@@ -65,7 +65,7 @@ h4,
 h5,
 h6 {
   padding: 0 0 0.5em 0;
-  font: normal 120% 'Droid Sans', arial, sans-serif;
+  font: normal 120% arial;
 }
 a,
 a:hover {
@@ -115,7 +115,7 @@ Header Class
   padding: 1.5em 0em 1.5em 0em;
 }
 #header h1 a {
-  font: bold 200% 'News Cycle', arial, sans-serif;
+  font: bold 200% arial;
   border-bottom: 0;
   text-transform: none;
   margin: 0;
@@ -124,7 +124,7 @@ Header Class
   text-decoration: none;
 }
 #header h2 {
-  font: normal 140% 'News Cycle', arial, sans-serif;
+  font: normal 140% arial;
   border-bottom: 0;
   margin-top: -1em;
   text-transform: none;
@@ -168,7 +168,7 @@ Header Class
   text-shadow: #7ea4bd 0 1px 0;
   color: #06426c;
   font-size: 17px;
-  font-family: helvetica, serif;
+  font-family: arial;
   text-decoration: none;
   vertical-align: middle;
   font-family: Arial;
@@ -220,7 +220,7 @@ Header Class
 Body content align
 ----------------------------------*/
 #strapline {
-  font: normal 200% 'News Cycle', arial, sans-serif;
+  font: normal 200% arial;
   border-bottom: 0;
   text-transform: none;
   text-align: center;

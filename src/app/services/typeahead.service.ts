@@ -9,9 +9,6 @@ export class TypeaheadService {
 
   constructor(private http: HttpClient) { }
 
-  //data: string = "";
-  //datad: string = "";
-
   getGene(term: string): Observable<string[]> {
     return new Observable((observer) => {
       let getGeneNamePromise: Promise<any>;
@@ -24,21 +21,10 @@ export class TypeaheadService {
 
       getGeneNamePromise.then((data) => {
         if (term) {
-          data = data.filter((x:any) => x.name.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
+          data = data.filter((x:any) => x.name.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) == 0);
         }
         observer.next(data);
       });
-
-      
     });
   }
-  /*setdata(value: string) {
-    this.data=value;
-  }
-
-  getdata():string{
-    return this.data;
-  }*/
-
-
 }

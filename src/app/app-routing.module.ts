@@ -7,12 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
 
   },
-  // Test plot page routing
   {
     path: 'PlotComponent',
     loadChildren:() => import('./plot/plot.module').then(m=>m.PlotComponentModule)
   }
-  //
 ];
 @NgModule({
   imports: [

@@ -1,70 +1,20 @@
-<ion-header class="title-header">
-  <div>
-      <a href="https://www.uab.edu/home/"><img src="/assets/images/uabheader-1.png" height="40" style="margin-top: 10px; margin-bottom: 10px;"></a>
-      <a href="https://www.uab.edu/medicine/pathology/"><img src="/assets/images/StandardPATHlogo.jpg" style=" 
-        float:right; height: auto; width: auto; max-width: 200px; max-height: 50px; margin-right: 10px; margin-bottom: 5px; margin-top: 5px;"></a>
-    </div>
-</ion-header>
-
-<ion-content>
-  <!--ion-button style="text-align:center; margin-left: 40%;" (click)="generateImage()">Create Image</ion-button-->
-
-  <div>
-    <a>
-      <img src="/assets/images/ualcanlogo.jpg" style="height: auto; width: auto; max-width: 180px; max-height: 70px; margin-left: 5px;"></a>
-      &nbsp;&nbsp;
-
-  </div>
-  
-    <ion-card class="citation-card" id="name">
-
-      <!--input type="button" class="btn btn-danger" value="Convert" (click)="downloadInvoice()" /-->
-        <ion-card-header><ion-card-title>Welcome to UALCAN User Guide!</ion-card-title></ion-card-header>
-        <ul>
-            <li> How to obtain list of top differentially expressed genes?</li>
-            <li>How to query UALCAN for gene(s) of interest in specific cancer?</li>
-              <p>a. How to explore expression profile of gene of interest based on clinico-pathologic factors?
-              </p><p>b. How to obtain Kaplan meier plot from UALCAN?
-              </p><p>c. How to obtain promoter DNA methylation level from UALCAN?
-              </p><p>d. How to obtain list of positive and negatively correlated genes from UALCAN?</p>
-            <li>How to obtain expression and survival profile for pre-compiled gene classes?</li>
-          <li>Introduction of Cancer terms</li>
-        </ul>
-        <ion-card-content>
-          <p>Chandrashekar DS, Bashel B, Balasubramanya SAH, Creighton CJ, Rodriguez IP, Chakravarthi BVSK and Varambally S. UALCAN: A portal for facilitating tumor subgroup gene expression and survival analyses. Neoplasia. 2017 Aug;19(8):649-658. doi: 10.1016/j.neo.2017.05.002<a class="ion-home color-primary item" href="#" onclick="window.open('https://www.ncbi.nlm.nih.gov/pubmed/28732212', '_system', 'location=yes'); return false;"> [PMID:28732212]</a></p>
-        </ion-card-content>
-      </ion-card>
-    <!--input type="button" class="btn btn-danger" value="Convert" (click)="downloadInvoice()" /-->
-    <ion-footer>
-      <div style="text-align: center; color: white; padding: 15px; margin-top: 100px; background-color: #1E6B52;">
-        <div style="margin-bottom: 15px">
-          
-        <div style="margin-bottom: 15px">
-          <a href="https://www.uab.edu/medicine/home/heersink" target="_blank"><img style="height: auto; width: auto; max-width: 180px; max-height: 
-            70px; background-color: #1E6B52;border:1.5px solid green;" src="/assets/images/heersink.png"></a>&nbsp;&nbsp;
-        </div>
-        <div>
-          <a href="https://www.uab.edu/onealcancercenter/" target="_blank">
-            <img src="/assets/images/oneal.png" style="height: auto; width: auto; max-width: 180px; max-height: 70px;background-color: #1E6B52; 
-            border:1.5px solid green;"></a>
-            &nbsp;&nbsp;
-    
-        </div>
-          
-        </div>
-    
-        <div class="text-piped" style="margin-bottom: 15px">
-          <span><a style="color:white;" href="https://www.uab.edu/home/contact" target="_self">Contact UAB</a></span> 
-          <span><a style="color:white;" href="https://www.uab.edu/privacy" target="_blank">Privacy</a></span> 
-          <span><a style="color:white;" href="https://www.uab.edu/toolkit/web/terms-of-use" target="_blank">Terms of Use</a></span>
-          <span>© 2022 The University of Alabama at Birmingham</span>
-        </div>
-        <p style="align:center;font-weight: 120;font-size: 14px;color:white;">UAB is an Equal Opportunity/Affirmative Action Employer 
-            committed to fostering a diverse, equitable and family-friendly environment in which all faculty and staff can excel and achieve 
-            work/life balance irrespective of race, national origin, age, genetic or family medical history, gender, faith, gender identity 
-            and expression as well as sexual orientation. UAB also encourages applications from individuals with disabilities and veterans.
-        </p>
-      </div>
-      
-      </ion-footer>
+<app-header></app-header>
+<ion-content class="content">
+  <ion-card class="citation-card" id="name">
+    <ion-card-header><ion-card-title>Welcome to UALCAN User Guide!</ion-card-title></ion-card-header>
+    <ul>
+        <li> How to obtain list of top differentially expressed genes?</li>
+        <li>How to query UALCAN for gene(s) of interest in specific cancer?</li>
+          <p>a. How to explore expression profile of gene of interest based on clinico-pathologic factors?
+          </p><p>b. How to obtain Kaplan meier plot from UALCAN?
+          </p><p>c. How to obtain promoter DNA methylation level from UALCAN?
+          </p><p>d. How to obtain list of positive and negatively correlated genes from UALCAN?</p>
+        <li>How to obtain expression and survival profile for pre-compiled gene classes?</li>
+      <li>Introduction of Cancer terms</li>
+    </ul>
+    <ion-card-content>
+      <p>Chandrashekar DS, Bashel B, Balasubramanya SAH, Creighton CJ, Rodriguez IP, Chakravarthi BVSK and Varambally S. UALCAN: A portal for facilitating tumor subgroup gene expression and survival analyses. Neoplasia. 2017 Aug;19(8):649-658. doi: 10.1016/j.neo.2017.05.002<a class="ion-home color-primary item" href="#" onclick="window.open('https://www.ncbi.nlm.nih.gov/pubmed/28732212', '_system', 'location=yes'); return false;"> [PMID:28732212]</a></p>
+    </ion-card-content>
+  </ion-card>
+  <app-footer></app-footer>
 </ion-content>

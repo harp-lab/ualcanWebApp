@@ -5,13 +5,14 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { TypeaheadService } from '../services/typeahead.service';
 import { SharedDataService } from "../services/SharedDataService.service";
 import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
+
 declare var createBoxPlot:any;
 declare var resizeBoxPlot:any;
 
 @Component({
   selector: 'app-plot',
   templateUrl: './plot.component.html',
-  styleUrls: ['./plot.component.scss'],
+  styleUrls: ['./plot.component.scss', '../shared.scss'],
 })
 export class PlotComponent implements OnInit, AfterViewInit {
 
@@ -26,9 +27,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
-  //dage: string="";
-
+  
   // pdf generator //
   downloadHighchart() {
     let plotTable = $('#plotCard');
@@ -51,18 +50,12 @@ export class PlotComponent implements OnInit, AfterViewInit {
 
   }
 
-
-  //
-
-  
-
   ngOnInit() {}
 
   ngAfterViewInit() {}
 
   ionViewWillEnter(){
     loadCharts(this.sharedservice.getdata());
-    //loadCharts(this.typeahead.getdata());
     showPlot();
   }
 
@@ -105,9 +98,5 @@ function loadCharts(jsonData:any):string{
         </div>`);
         createBoxPlot(`container${index}`,false,data.gene,data.cancer,data.dataset,data.yAxis,plot.data,undefined,false);
     });
-    //this.dage=data.gene;
     return data.gene;
-
-    
-
   }  

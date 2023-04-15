@@ -14,18 +14,20 @@ import {HttpClientModule} from '@angular/common/http';
 import { PDFGenerator } from '@ionic-native/pdf-generator/ngx'
 //
 
+import { HeaderComponentModule } from './header/header.module';
+import { FooterComponentModule } from './footer/footer.module';
+
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, HeaderComponentModule, FooterComponentModule],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    //pdf generator //
     PDFGenerator, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-    //
-    //{provide: LocationStrategy, useClass: HashLocationStrategy}  // refresh page problem
   ],
   bootstrap: [AppComponent]
 })

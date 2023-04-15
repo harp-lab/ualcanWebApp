@@ -6,6 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { analysisPage } from './analysis.page';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { HeaderComponentModule } from '../header/header.module';
+import { FooterComponentModule } from '../footer/footer.module';
 
 //Auto complete //
 
@@ -16,11 +18,14 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    
+    HeaderComponentModule,
+    FooterComponentModule,
     RouterModule.forChild([{ path: '', component: analysisPage }])
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [analysisPage],
+  declarations: [
+    analysisPage
+  ],
 
   // screen rotate ///
   providers: [
