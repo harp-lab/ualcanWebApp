@@ -90,7 +90,7 @@ function loadCharts(jsonData:any):string{
                 ${plot.stats.map((stat:any) => {
                   return `<tr style=${stat.name.substring(0, 7) === 'Normal-' ? '"color:#D55C24;font-weight:bold;"' : '"color:#131110;"'} align="center">
                     <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">${stat.name}</td>
-                    <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">${stat.value}</td>
+                    <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">${Number(stat.value).toFixed(4)}</td>
                   </tr>`;
                 }).join('')}
               </tbody>
