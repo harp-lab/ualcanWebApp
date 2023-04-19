@@ -30,17 +30,22 @@ export class PlotComponent implements OnInit, AfterViewInit {
   
   // pdf generator //
   downloadHighchart() {
-    let plotTable = $('#plotCard');
-    let container = plotTable.find(`#container${$("#plotSelect").prop("selectedIndex")}`);
-    plotTable.css("height", "1000px");
+    let plotCard = $('#plotCard');
+    let containerDiv = plotCard.find(`#containerDiv${$("#plotSelect").prop("selectedIndex")}`);
+    let container = plotCard.find(`#container${$("#plotSelect").prop("selectedIndex")}`);
+    containerDiv.css("height", "80%");
+    plotCard.css("height", "700px");
+    plotCard.css("width", "500px");
     resizeBoxPlot(container);
     let clonedTable = $('#plotCard').clone();
-    plotTable.css("height", "100%");
+    containerDiv.css("height", "95%");
+    plotCard.css("height", "");
+    plotCard.css("width", "");
     resizeBoxPlot(container);
     this.content = clonedTable.prop('outerHTML');
     console.log(this.content);
     let options = {
-      documentSize: 'A3',
+      documentSize: 'A4',
       type: 'share', 
       fileName: 'plot.pdf'
     };
@@ -81,7 +86,7 @@ function loadCharts(jsonData:any):string{
       $('#plotSelect').append(`<option ${plot.selected===true?'selected':''}>${plot.grouping}</option>`);
         $('#plotTable').append(
         `<div align=center id="container${index}x" class="containerx plotDiv" style="height:95%;display:none;">
-            <div style="height:95%;">
+            <div id="containerDiv${index}" style="height:95%;">
                 <div id="container${index}" class="container" style="height:95%;"></div>
             </div>
             <table align="center" border="1" style="width:100%;">
