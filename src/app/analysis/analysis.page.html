@@ -7,8 +7,8 @@
           <ion-item >
             <div class="ion-padding">
               <ion-label>Select Cancer type</ion-label>
-              <div class="dropdownstyling">
-                <select style="width: 230px; height: 40px;" formControlName="selectedCancer">  <!-- formControlName is used to capture the selected item from the dropdown-->
+              <div>
+                <select class="dropdown" formControlName="selectedCancer">  <!-- formControlName is used to capture the selected item from the dropdown-->
                   <option *ngIf="!form.value.select" [ngValue]="null" selected disabled></option>
                   <option *ngFor="let cancer of cancers; index as i;" value ="{{cancer.id}}">{{cancer.name}}</option>
                 </select>
@@ -18,7 +18,7 @@
           <ion-item>
             <div class="ion-padding">
               <ion-label>Enter/Select Gene</ion-label> 
-              <ng-select style="width: 230px; height: 40px;" [items]="genes | async" bindLabel="name" 
+              <ng-select class="dropdown" [items]="genes | async" bindLabel="name" 
                 formControlName="name" notFoundText="No records found" 
                 [multiple]="false"
                 appendTo="#containervalue"

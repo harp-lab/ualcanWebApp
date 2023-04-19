@@ -1,6 +1,6 @@
-function resizeBoxPlot(containerId)
+function resizeBoxPlot(container)
 {
-	var index=$(`#${containerId}`).data('highchartsChart');
+	var index=container.data('highchartsChart');
  	var chart=Highcharts.charts[index];
 	chart.reflow();
 }

@@ -23,7 +23,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
     // find out changes in orientation
     this.so.onChange().subscribe(
       () => {
-        resizeBoxPlot(`container${$("#plotSelect").prop("selectedIndex")}`);
+        resizeBoxPlot($(`#container${$("#plotSelect").prop("selectedIndex")}`));
       }
     );
   }
@@ -31,14 +31,17 @@ export class PlotComponent implements OnInit, AfterViewInit {
   // pdf generator //
   downloadHighchart() {
     let plotTable = $('#plotCard');
-    //plotTable.find(`.plotDiv[id!=container${$("#plotSelect").prop("selectedIndex")}x]`).remove();
-    this.content = plotTable.prop('outerHTML');
+    let container = plotTable.find(`#container${$("#plotSelect").prop("selectedIndex")}`);
+    plotTable.css("height", "1000px");
+    resizeBoxPlot(container);
+    let clonedTable = $('#plotCard').clone();
+    plotTable.css("height", "100%");
+    resizeBoxPlot(container);
+    this.content = clonedTable.prop('outerHTML');
     console.log(this.content);
-    //this.content =  $('#plotTable').html();
     let options = {
       documentSize: 'A3',
       type: 'share', 
-      // landscape: 'portrait',
       fileName: 'plot.pdf'
     };
     this.pdfGenerator.fromData(this.content, options)
@@ -67,7 +70,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
 function showPlot(){
     $('.containerx').hide();
     $(`#container${$("#plotSelect").prop("selectedIndex")}x`).show();
-    resizeBoxPlot(`container${$("#plotSelect").prop("selectedIndex")}`);
+    resizeBoxPlot($(`#container${$("#plotSelect").prop("selectedIndex")}`));
   }
 
 function loadCharts(jsonData:any):string{
