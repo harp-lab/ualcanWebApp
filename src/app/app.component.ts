@@ -30,6 +30,7 @@ export class AppComponent {
           const style = document.documentElement.style;
           // Apply insets as css variables
           window.AndroidNotch.getInsetTop(px => {
+              px=(px==0?25:px);
               style.setProperty("--ion-safe-area-top", px + "px");
           }, (err) => console.error("Failed to get insets top:", err));
           window.AndroidNotch.getInsetRight(px => {
