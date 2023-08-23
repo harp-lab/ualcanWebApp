@@ -40,7 +40,7 @@
     "@types/jest": "^29.2.4",
     "cordova-android": "^10.1.2",
     "cordova-browser": "^6.0.0",
-    "cordova-ios": "^6.2.0",
+    "cordova-ios": "^6.3.0",
     "cordova-plugin-android-notch": "^1.0.3",
     "cordova-plugin-device": "~2.0.2",
     "cordova-plugin-file": "^7.0.0",
