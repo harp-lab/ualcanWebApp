@@ -96,9 +96,12 @@ function loadCharts(jsonData:any):string{
                   <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#C8F6FE;font-weight:bold;"><b>Statistical significance</b></td>
                 </tr>
                 ${plot.stats.map((stat:any) => {
+                  var statNumber = Number(stat.value);
+                  var statString = '';
+                  statString = statNumber.toExponential()
                   return `<tr style=${stat.name.substring(0, 7) === 'Normal-' ? '"color:#D55C24;font-weight:bold;"' : '"color:#131110;"'} align="center">
                     <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">${stat.name}</td>
-                    <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">${Number(stat.value).toFixed(4)}</td>
+                    <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">${statString}</td>
                   </tr>`;
                 }).join('')}
               </tbody>
