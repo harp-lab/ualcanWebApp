@@ -37,6 +37,7 @@ export class AppComponent {
               style.setProperty("--ion-safe-area-right", px + "px");
           }, (err) => console.error("Failed to get insets right:", err));
           window.AndroidNotch.getInsetBottom(px => {
+              px=(px==0?25:px);
               style.setProperty("--ion-safe-area-bottom", px + "px");
           }, (err) => console.error("Failed to get insets bottom:", err));
           window.AndroidNotch.getInsetLeft(px => {
