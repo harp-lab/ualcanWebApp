@@ -83,24 +83,39 @@ export class analysisPage{
     var gene = this.form.get('name')?.value.name;
     var cancer = this.form.get('selectedCancer')?.value;
 
-    $.ajax({
-      type: 'GET',
-      url: `https://ualcan.path.uab.edu/cgi-bin/ualcan-gene-json.pl?genenam=${gene}&ctype=${cancer}`,
-      dataType: 'text',
-      success: (response) => {
-        if(response==="{}"){
-          console.log("no response");
-          alert(`No data for ${gene} and ${cancer}`);
-        }else{
-          console.log("yes response");
-          this.sharedservice.setdata(response);
-          this.router.navigate(['PlotComponent']);
-        } 
-      },
-      error: function (response, error) {
-          alert(error);
-      }
-  }); 
+    try
+    {
+      $.ajax({
+        type: 'GET',
+        url: `https://ualcan.path.uab.edu/cgi-bin/ualcan-gene-json.pl?genenam=${gene}&ctype=${cancer}`,
+        dataType: 'text',
+        cache: false,
+        timeout: 10000,
+        success: (response) => {
+          if(response==="{}"){
+            console.log("no response");
+            alert(`No data for ${gene} and ${cancer}`);
+          }else{
+            console.log("yes response");
+            this.sharedservice.setdata(response);
+            this.router.navigate(['PlotComponent']);
+          } 
+        },
+        error: function (response, error, errorThrown) {
+          alert(`UALCAN API Error1: ${errorThrown}
+Please try again.
+If the problem persists,
+please contact support.`);
+        }
+      }); 
+    }
+    catch(ex)
+    {
+      alert(`UALCAN API Error2: ${ex}
+Please try again.
+If the problem persists,
+please contact support.`);
+    }
   } 
 }
 
