@@ -98,8 +98,13 @@ function loadCharts(jsonData:any):string{
                 ${plot.stats.map((stat:any) => {
                   var statNumber = Number(stat.value);
                   var statString = '';
-                  statString = statNumber.toExponential()
-                  return `<tr style=${stat.name.substring(0, 7) === 'Normal-' ? '"color:#D55C24;font-weight:bold;"' : '"color:#131110;"'} align="center">
+                  if(statNumber === 0){
+                    statString = '<1.00e-12';
+                  }else{
+                    statString = statNumber.toExponential(2);
+                  }
+                  var statStyle = statNumber < 0.05 ? '"color:#D55C24;font-weight:bold;"' : '"color:#131110;"';
+                  return `<tr style=${statStyle} align="center">
                     <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">${stat.name}</td>
                     <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">${statString}</td>
                   </tr>`;
