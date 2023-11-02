@@ -180,7 +180,34 @@ function createBoxPlot(containerId, showJitter, gene, cancer, dataset, yAxis, da
 					})
 				)
 			:[]
-		]
+		],
+		responsive: {
+			rules: [{
+				condition: {
+					maxWidth: 500
+				},
+				// Make the labels less space demanding on mobile
+				chartOptions: {
+					xAxis: {
+						labels: {
+							formatter: function () {
+								return this.value.split('<br>')[1].replace('(','').replace(')','');
+							}
+						}
+					},
+					yAxis: {
+						labels: {
+							align: 'left',
+							x: 0,
+							y: -2
+						},
+						title: {
+							text: ''
+						}
+					}
+				}
+			}]
+		}
 	};
 	
 	return $(`#${containerId}`).highcharts(config);
