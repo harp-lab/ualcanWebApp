@@ -40,6 +40,12 @@ function createBoxPlot(containerId, showJitter, gene, cancer, dataset, yAxis, da
 		yMax = Math.ceil(dsMax / yInterval) * yInterval;
 		//scatterMarkerRadius = ((1 - 2) / (20 - 2)) * data.length + (38 / 18);
 	}
+
+	// Get the quartile 3 max so that the y-axis extreme can be dynamically set in landscape mode
+	let q3Max, highMax;
+	q3Max = (singlePlotData??data).map(e => +e.q3).reduce((prev,curr) => curr>prev?curr:prev);
+	highMax = (singlePlotData??data).map(e => +e.high).reduce((prev,curr) => curr>prev?curr:prev);
+	
 	let config = {
 		credits: {
 			enabled: false
@@ -188,13 +194,6 @@ function createBoxPlot(containerId, showJitter, gene, cancer, dataset, yAxis, da
 				},
 				// Make the labels less space demanding on mobile
 				chartOptions: {
-					xAxis: {
-						labels: {
-							formatter: function () {
-								return this.value.split('<br>')[1].replace('(','').replace(')','');
-							}
-						}
-					},
 					yAxis: {
 						labels: {
 							align: 'left',
@@ -204,6 +203,23 @@ function createBoxPlot(containerId, showJitter, gene, cancer, dataset, yAxis, da
 						title: {
 							text: ''
 						}
+					}
+				}
+			},{
+				condition: {
+					maxHeight: 400
+				},
+				// Make the labels less space demanding on mobile
+				chartOptions: {
+					xAxis: {
+						labels: {
+							formatter: function () {
+								return this.value.split('<br>')[1].replace('(','').replace(')','');
+							}
+						}
+					},
+					yAxis: {
+						max: q3Max + ((highMax - q3Max) / 10)
 					}
 				}
 			}]

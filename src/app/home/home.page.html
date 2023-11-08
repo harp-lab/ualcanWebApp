@@ -1,12 +1,14 @@
 <app-header></app-header>
 <ion-content class="main-body content">
   <ion-card class="welcome-card">
-    <ion-card-header>
-      <ion-card-title>Welcome to UALCAN</ion-card-title>
-    </ion-card-header>
     <ion-card-content>
-    <p>UALCAN is a comprehensive, user-friendly, and interactive web resource for analyzing cancer OMICS data. It is built on PERL-CGI with high quality graphics using javascript and CSS. UALCAN is designed to, a) provide easy access to publicly available cancer OMICS data (TCGA and MET500), b) allow users to identify biomarkers or to perform in silico validation of potential genes of interest, c) provide graphs and plots depicting gene expression and patient survival information based on gene expression, d) evaluate gene expression in molecular subtypes of breast and prostate cancer, e) evaluate epigenetic regulation of gene expression by promoter methylation and correlate with gene expression, f) perform pan-cancer gene expression analysis, and g) Provide additional information about the selected genes/targets by linking to HPRD, GeneCards, Pubmed, TargetScan, The human protein atlas, DRUGBANK, Open Targets and the GTEx. These resources allow researchers to gather valuable information and data about the genes/targets of interest.</p></ion-card-content>
-    <p style="text-align: center"><a class="ion-home color-primary item" href="#" onclick="window.open('https://twitter.com/@Now_UALCAN', '_system', 'location=yes'); return false;">Follow on Twitter</a></p>
+      <p>Welcome to UALCAN Mobile, a free app available in android and iOS/Apple app store for analyzing cancer gene expression data.
+        <br/>
+        <br/>
+        It is a companion app for the web based <a href="https://ualcan.path.uab.edu"><span class="s2">UALCAN</span></a> and provides easy access to and analysis of TCGA gene expression data and to provide graphs depicting the gene expression profile.
+      </p>
+    </ion-card-content>
+    <div style="text-align:center;width:100%;"><a class="ion-home color-primary item" href="#" onclick="window.open('https://twitter.com/@Now_UALCAN', '_system', 'location=yes'); return false;">Follow on Twitter</a></div>
     <div class="feedbackButton">
       <a href="mailto:ualcanask@gmail.com?subject=Testing out mailto!&body=This is only a test!" class="feedbackLink">
         <img src="/assets/images/mail-green.svg" class="feedbackImage">
@@ -18,30 +20,44 @@
   <ion-card class="citation-card">
       <ion-card-header><ion-card-title></ion-card-title></ion-card-header>
       <ion-card-content>
-        <ion-img src="/assets/pic1.png"></ion-img>
+        <div class="column">
+          <ion-img src="/assets/images/MRPL14.png"></ion-img>
+        </div>
+        <div class="column">
+          <ion-img src="/assets/images/EZH2.png"></ion-img>
+        </div>
       </ion-card-content>
     </ion-card>
   <ion-card class="update">
     <ion-card-header><ion-card-title>Updates</ion-card-title></ion-card-header>
     <ion-list lines="none">
       <ion-item>
-        <p>06/06/2019: UALCAN now provides pan-cancer profile of unfolded protein response genes in the "Scan by gene classes" Section.</p>
+        <span class="s1">09/14/2023</span>
       </ion-item>
       <ion-item>
-        <p>06/06/2019: UALCAN now provides gene expression and promoter methylation profile based on patient's alcohol consumption for Esophageal carcinoma.</p>
+        <span class="s3">Our new publication in Nature communications <a href="https://www.nature.com/articles/s41467-023-41374-8?fbclid=IwAR0m0WpNAEFRn3cnPHzitUK7sPceW_7WoCIZEzfJfJdWnqTswav8ln9ZI5s"><span class="s2">"Chen F, Zhang Y, Chandrashekar DS, Varambally S, Creighton CJ. Global impact of somatic structural variation on the cancer proteome. Nature Communications, 2023 Sept., 13 ;14(1):5637. doi: 10.1038/s41467-023-41374-8."</span></a></span>
       </ion-item>
       <ion-item>
-        <ion-label></ion-label>
-        <p>05/10/2019: UALCAN now provides gene expression visualization across cancers (pan-cancer) for the gene of interest.</p>
+        <span class="s1">09/07/2023</span>
       </ion-item>
       <ion-item>
-        <ion-label></ion-label>
-        <p>03/13/2019: UALCAN now provides gene expression based on tumor histology for Uveal Melanoma (UVM) and Pheochromocytoma and Paraganglioma (PCPG) TCGA datasets. Also user can access gene expression based on tumor grade for Cholangiocarcinoma (CHOL), Cervical squamous cell carcinoma (CESC) and Pancreatic adenocarcinoma (PAAD).</p>
+        <span class="s3">UALCAN has been now visited over a 1.3 Million times by cancer researchers from over 100 countries and related papers cited over 5,000 times</span>
       </ion-item>
-        <a class="ion-home color-primary item" href="#" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/35078134/', '_system', 'location=yes'); return false;"> 
-          [PMID:35078134]</a>
-        <a class="ion-home color-primary item" href="#" onclick="window.open('https://www.ncbi.nlm.nih.gov/pubmed/28732212', '_system', 'location=yes'); return false;"> 
-          [PMID:28732212]</a>
+      <ion-item>
+        <span class="s1">08/16/2022</span>
+      </ion-item>
+      <ion-item>
+        <span class="s3">UALCAN now aids cancer researchers in obtaining list of <a href="https://ualcan.path.uab.edu/analysis-surv.html"><span class="s2">potential prognostic markers</span></a></span>
+      </ion-item>  
+      <ion-item>
+        <span class="s1">05/13/2022</span>
+      </ion-item>
+      <ion-item>
+        <span class="s3"><a href="https://www.nature.com/articles/s41467-022-30342-3"><span class="s2">Zhang, Y., Chen, F., Chandrashekar, D.S., Varambally, S., Creighton, C.J. Proteogenomic characterization of 2002 human cancers reveals pan-cancer molecular subtypes and associated pathways. Nat Commun 13, 2669 (2022) doi: 10.1038/s41467-022-30342-3</span></a></span>
+      </ion-item>
+      <ion-item>
+        <span class="s5"> <a href="https://pubmed.ncbi.nlm.nih.gov/35562349/"><span class="s2">[PMID: 35562349]</span></a></span>
+      </ion-item>
     </ion-list>
   </ion-card>
   

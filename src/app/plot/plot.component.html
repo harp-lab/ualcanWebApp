@@ -2,10 +2,12 @@
   <ion-toolbar class="toolbar">
     <ion-buttons slot="start">
         <ion-back-button class="backbutton" text="Back" defaultHref="/HomePage"></ion-back-button>
+   </ion-buttons>
+    <ion-buttons slot="end">
+        <ion-button  class="downloadbutton" (click)="downloadHighchart()">
+          download
+        </ion-button>
     </ion-buttons>
-    <div class="ualcanLogoContainer">
-        <img class="ualcanLogo" src="/assets/images/ualcanlogo.png">
-    </div>
   </ion-toolbar>
 </ion-header>
 <ion-content class="content">
@@ -22,9 +24,3 @@
   </ion-card>
   <app-footer></app-footer>
 </ion-content>
-<ion-footer class="footer">
-  <ion-button class="downloadbutton" (click)="downloadHighchart()">
-    download
-  </ion-button>
-</ion-footer>
-  

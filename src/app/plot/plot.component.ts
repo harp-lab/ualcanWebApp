@@ -34,8 +34,8 @@ export class PlotComponent implements OnInit, AfterViewInit {
     let containerDiv = plotCard.find(`#containerDiv${$("#plotSelect").prop("selectedIndex")}`);
     let container = plotCard.find(`#container${$("#plotSelect").prop("selectedIndex")}`);
     containerDiv.css("height", "80%");
-    plotCard.css("height", "700px");
-    plotCard.css("width", "500px");
+    plotCard.css("height", "800px");
+    plotCard.css("width", "600px");
     resizeBoxPlot(container);
     let clonedTable = $('#plotCard').clone();
     containerDiv.css("height", "95%");
@@ -80,7 +80,6 @@ function showPlot(){
 
 function loadCharts(jsonData:any):string{
     let data:any = JSON.parse(jsonData);
-    
     data.plots.forEach((plot:any,index:any) => {
       $('#plotTitle').html(`<b>${data.gene} expression in ${data.cancer} profile based on&nbsp;&nbsp;</b>`);
       $('#plotSelect').append(`<option ${plot.selected===true?'selected':''}>${plot.grouping}</option>`);
@@ -98,10 +97,15 @@ function loadCharts(jsonData:any):string{
                 ${plot.stats.map((stat:any) => {
                   var statNumber = Number(stat.value);
                   var statString = '';
-                  if(statNumber === 0){
+                  var statStyle = '"color:#131110;"';
+                  if(isNaN(statNumber)){
+                    statString = stat.value;
+                  }else if(statNumber === 0){
                     statString = '<1.00e-12';
+                    statStyle = '"color:#D55C24;font-weight:bold;"';
                   }else{
                     statString = statNumber.toExponential(2);
+                    statStyle = '"color:#D55C24;font-weight:bold;"';
                   }
                   var statStyle = statNumber < 0.05 ? '"color:#D55C24;font-weight:bold;"' : '"color:#131110;"';
                   return `<tr style=${statStyle} align="center">

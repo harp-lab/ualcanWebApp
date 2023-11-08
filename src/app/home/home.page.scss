@@ -5,12 +5,12 @@
 
 .feedbackLink {
     background-color: #fff; 
-    color: #144B39; 
+    color: #0000ff; 
     border-radius: 2px; 
     text-decoration: none; 
     font-weight: 500 !important; 
     display: inline-block; 
-    padding: 3px 10px
+    padding: 3px
 }
 
 .feedbackImage {
@@ -19,3 +19,13 @@
     max-width: 50px; 
     max-height: 20px;
 }
+
+span.s1 {color: #921a20; -webkit-text-stroke: #921a20}
+span.s2 {text-decoration: underline ; color: #0000ff; -webkit-text-stroke: 0px #0000ff}
+span.s3 {color: #000000; -webkit-text-stroke: 0px #000000}
+.column {
+    margin: 2%;
+    width: 96%; 
+} 
+
+p, span {font-size:20px;}
