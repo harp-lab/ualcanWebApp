@@ -100,6 +100,9 @@ function createBoxPlot(containerId, showJitter, gene, cancer, dataset, yAxis, da
 			style: {fontSize: '1.8em',fontWeight: 'bold'},
 			lineWidth: 1,
 			lineColor: 'black',
+			labels: {
+				style: { fontSize: (singlePlotData??data).length > 6 ? '0.7em' :'0.8em'},
+			},
 			title: {
 				text: `${dataset} samples`,style: {color:'black', fontSize: '0.9em',fontWeight: 'bold'},
 				useHTML: true
@@ -189,23 +192,6 @@ function createBoxPlot(containerId, showJitter, gene, cancer, dataset, yAxis, da
 		],
 		responsive: {
 			rules: [{
-				condition: {
-					maxWidth: 500
-				},
-				// Make the labels less space demanding on mobile
-				chartOptions: {
-					yAxis: {
-						labels: {
-							align: 'left',
-							x: 0,
-							y: -2
-						},
-						title: {
-							text: ''
-						}
-					}
-				}
-			},{
 				condition: {
 					maxHeight: 400
 				},
