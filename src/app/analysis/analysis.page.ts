@@ -70,7 +70,26 @@ export class analysisPage{
     {id:"UCS", name:"Uterine carcinosarcoma"}
   ];
 
+  public proteomicCancers: Array<ICancer> = [
+    {id:"BRCA", name:"Breast cancer"},
+    {id:"COAD", name:"Colon cancer"},
+    {id:"OV", name:"Ovarian cancer"},
+    {id:"PAAD", name:"Pancreatic cancer"},
+    {id:"PRAD", name:"Prostate cancer"},
+    {id:"STAD", name:"Gastric cancer"},
+    {id:"UCEC", name:"Endpometrial cancer"},
+    {id:"LUAD", name:"Lung adenocarcinoma"},
+    {id:"LIHC", name:"Liver cancer"},
+    {id:"LUSC", name:"Lung squamous carcinoma"},
+    {id:"LUADAP", name:"Lung adenocarcinoma Apollo"},
+    {id:"KIRC", name:"Clear cell RCC"},
+    {id:"CCRCCex", name:"Clear cell RCC - Extended"},
+    {id:"Glioma", name:"Glioma"},
+    {id:"GBM", name:"Glioblastoma"}
+  ];
+
   public cancerID:string;
+  public analysis:string;
 
   constructor(public router: Router, private formBuilder: FormBuilder, private typeahead: TypeaheadService, private navCtrl: NavController,
     private sharedservice: SharedDataService, private so: ScreenOrientation) {
@@ -80,14 +99,28 @@ export class analysisPage{
   // search button
   goforward(){
     
-    var gene = this.form.get('name')?.value.name;
-    var cancer = this.form.get('selectedCancer')?.value;
+    let gene = this.form.get('name')?.value.name;
+    let cancer = this.form.get('selectedCancer')?.value;
+    this.analysis = document.querySelector('input[name="analysis"]:checked').getAttribute("value");
+    let api = ''
+    switch (this.analysis) {
+      case 'expression':
+        api = 'ualcan-gene-json.pl';
+        break;
+      case 'methylation':
+        api = 'ualcan-methyl-json.pl';
+        break;
+      case 'proteomics':
+        api = 'ualcan-CPTAC-json.pl';
+        break;
+      default:
+    }
 
     try
     {
       $.ajax({
         type: 'GET',
-        url: `https://ualcan.path.uab.edu/cgi-bin/ualcan-gene-json.pl?genenam=${gene}&ctype=${cancer}`,
+        url: `https://ualcan.path.uab.edu/cgi-bin/${api}?genenam=${gene}&ctype=${cancer}`,
         dataType: 'text',
         cache: false,
         timeout: 10000,
@@ -98,6 +131,7 @@ export class analysisPage{
           }else{
             console.log("yes response");
             this.sharedservice.setdata(response);
+            this.sharedservice.setanalysis(this.analysis);
             this.router.navigate(['PlotComponent']);
           } 
         },

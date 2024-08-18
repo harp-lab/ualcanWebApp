@@ -10,7 +10,7 @@
               <div>
                 <select class="dropdown" formControlName="selectedCancer">  <!-- formControlName is used to capture the selected item from the dropdown-->
                   <option *ngIf="!form.value.select" [ngValue]="null" selected disabled></option>
-                  <option *ngFor="let cancer of cancers; index as i;" value ="{{cancer.id}}">{{cancer.name}}</option>
+                  <option *ngFor="let cancer of (analysis == 'proteomics' ? proteomicCancers : cancers); index as i;" value ="{{cancer.id}}">{{cancer.name}}</option>
                 </select>
               </div>
             </div>
@@ -26,6 +26,25 @@
               </ng-select>
             </div>
           </ion-item>
+          <ion-item >
+            <div class="ion-padding">
+              <ion-label>Select Analysis</ion-label>
+              <fieldset class="fieldset">
+                <div>
+                  <input type="radio" id="tcga" name="analysis" value="expression" checked />
+                  <label for="tcga_expression">Expression</label>
+                </div>
+                <div>
+                  <input type="radio" id="tcga" name="analysis" value="methylation" />
+                  <label for="tcga_methylation">Methylation</label>
+                </div>
+                <div>
+                  <input type="radio" id="proteomics" name="analysis" value="proteomics" />
+                  <label for="proteomics">Proteomic</label>
+                </div>
+              </fieldset>
+            </div>
+          </ion-item> 
         </ion-list>
       </div>
     </form>
