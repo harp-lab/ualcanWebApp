@@ -89,19 +89,23 @@ export class analysisPage{
   ];
 
   public cancerID:string;
-  public analysis:string;
+  public analysis:string = "expression";
 
   constructor(public router: Router, private formBuilder: FormBuilder, private typeahead: TypeaheadService, private navCtrl: NavController,
     private sharedservice: SharedDataService, private so: ScreenOrientation) {
     this.createForm();
   }
 
+  // analysis inputs
+  analysisChange(ev) {
+    this.analysis = ev.target.value;
+  }
+
   // search button
-  goforward(){
+  goForward(){
     
     let gene = this.form.get('name')?.value.name;
     let cancer = this.form.get('selectedCancer')?.value;
-    this.analysis = document.querySelector('input[name="analysis"]:checked').getAttribute("value");
     let api = ''
     switch (this.analysis) {
       case 'expression':

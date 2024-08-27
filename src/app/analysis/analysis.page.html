@@ -4,9 +4,9 @@
     <form [formGroup]="form">
       <div id="container" >
         <ion-list>
-          <ion-item >
-            <div class="ion-padding">
-              <ion-label>Select Cancer type</ion-label>
+          <ion-item lines="none">
+            <div>
+              <ion-label>Cancer</ion-label>
               <div>
                 <select class="dropdown" formControlName="selectedCancer">  <!-- formControlName is used to capture the selected item from the dropdown-->
                   <option *ngIf="!form.value.select" [ngValue]="null" selected disabled></option>
@@ -14,10 +14,10 @@
                 </select>
               </div>
             </div>
-          </ion-item> 
-          <ion-item>
-            <div class="ion-padding dropdownContainer">
-              <ion-label>Enter/Select Gene</ion-label> 
+          </ion-item>
+          <ion-item lines="none">
+            <div class="dropdownContainer">
+              <ion-label>Gene</ion-label>
               <ng-select class="dropdown" [items]="genes | async" bindLabel="name" 
                 formControlName="name" notFoundText="No records found" 
                 [multiple]="false"
@@ -26,30 +26,30 @@
               </ng-select>
             </div>
           </ion-item>
-          <ion-item >
-            <div class="ion-padding">
-              <ion-label>Select Analysis</ion-label>
-              <fieldset class="fieldset">
-                <div>
-                  <input type="radio" id="tcga" name="analysis" value="expression" checked />
-                  <label for="tcga_expression">Expression</label>
-                </div>
-                <div>
-                  <input type="radio" id="tcga" name="analysis" value="methylation" />
-                  <label for="tcga_methylation">Methylation</label>
-                </div>
-                <div>
-                  <input type="radio" id="proteomics" name="analysis" value="proteomics" />
-                  <label for="proteomics">Proteomic</label>
-                </div>
-              </fieldset>
+          <ion-item lines="none">
+            <div>
+              <ion-label>Analysis</ion-label>
+              <ion-radio-group value="expression" (ionChange)="analysisChange($event)">
+                <ion-item lines="none">
+                  <ion-label>Expression</ion-label>
+                  <ion-radio value="expression"></ion-radio>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-label>Methylation</ion-label>
+                  <ion-radio value="methylation"></ion-radio>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-label>Proteomics</ion-label>
+                  <ion-radio value="proteomics"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
             </div>
-          </ion-item> 
+          </ion-item>
         </ion-list>
       </div>
     </form>
     <div style="text-align:center">
-      <ion-button (click)='goforward()' class="searchbutton" routerDirection="forward">Search</ion-button>
+      <ion-button (click)='goForward()' class="searchbutton" routerDirection="forward">Search</ion-button>
     </div>
   </ion-card>
   <app-footer></app-footer>
