@@ -5,25 +5,22 @@
       <div id="container" >
         <ion-list>
           <ion-item lines="none">
-            <div>
-              <ion-label>Cancer</ion-label>
-              <div>
-                <select class="dropdown" formControlName="selectedCancer">  <!-- formControlName is used to capture the selected item from the dropdown-->
-                  <option *ngIf="!form.value.select" [ngValue]="null" selected disabled></option>
-                  <option *ngFor="let cancer of (analysis == 'proteomics' ? proteomicCancers : cancers); index as i;" value ="{{cancer.id}}">{{cancer.name}}</option>
-                </select>
-              </div>
-            </div>
-          </ion-item>
-          <ion-item lines="none">
             <div class="dropdownContainer">
               <ion-label>Gene</ion-label>
-              <ng-select class="dropdown" [items]="genes | async" bindLabel="name" 
-                formControlName="name" notFoundText="No records found" 
+              <ng-select class="dropdown" [items]="genes | async" bindLabel="name"
+                formControlName="name" notFoundText="No records found"
                 [multiple]="false"
                 appendTo="#containervalue"
                 (keyup)="getGeneName($event)">
               </ng-select>
+            </div>
+          </ion-item>
+          <ion-item lines="none">
+            <div class="dropdownContainer">
+              <ion-label>Cancer</ion-label>
+              <select class="dropdown" formControlName="selectedCancer" (change)="cancerChanged($event)">  <!-- formControlName is used to capture the selected item from the dropdown-->
+                <option *ngFor="let cancer of (analysis == 'proteomics' ? proteomicCancers : cancers); index as i;" value ="{{cancer.id}}">{{cancer.name}}</option>
+              </select>
             </div>
           </ion-item>
           <ion-item lines="none">

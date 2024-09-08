@@ -28,7 +28,8 @@ export class analysisPage{
     });
   }
   getGeneName(event:any) {
-    this.genes = this.typeahead.getGene(event.target.value);
+    let cancerId = this.form.get('selectedCancer')?.value;
+    this.genes = this.typeahead.getGene(event.target.value, this.analysis, cancerId);
   }
 
   // dropdown list
@@ -72,33 +73,65 @@ export class analysisPage{
 
   public proteomicCancers: Array<ICancer> = [
     {id:"BRCA", name:"Breast cancer"},
-    {id:"COAD", name:"Colon cancer"},
-    {id:"OV", name:"Ovarian cancer"},
-    {id:"PAAD", name:"Pancreatic cancer"},
-    {id:"PRAD", name:"Prostate cancer"},
-    {id:"STAD", name:"Gastric cancer"},
-    {id:"UCEC", name:"Endpometrial cancer"},
-    {id:"LUAD", name:"Lung adenocarcinoma"},
-    {id:"LIHC", name:"Liver cancer"},
-    {id:"LUSC", name:"Lung squamous carcinoma"},
-    {id:"LUADAP", name:"Lung adenocarcinoma Apollo"},
     {id:"KIRC", name:"Clear cell RCC"},
     {id:"CCRCCex", name:"Clear cell RCC - Extended"},
+    {id:"COAD", name:"Colon cancer"},
+    {id:"UCEC", name:"Endpometrial cancer"},
+    {id:"STAD", name:"Gastric cancer"},
+    {id:"GBM", name:"Glioblastoma"},
     {id:"Glioma", name:"Glioma"},
-    {id:"GBM", name:"Glioblastoma"}
+    {id:"HNSC", name:"Head and Neck Cancer"},
+    {id:"LIHC", name:"Liver cancer"},
+    {id:"LUAD", name:"Lung adenocarcinoma"},
+    {id:"LUADAP", name:"Lung adenocarcinoma Apollo"},
+    {id:"LUSC", name:"Lung squamous carcinoma"},
+    {id:"OV", name:"Ovarian cancer"},
+    {id:"PAAD", name:"Pancreatic cancer"},
+    {id:"PRAD", name:"Prostate cancer"}
   ];
 
-  public cancerID:string;
   public analysis:string = "expression";
 
   constructor(public router: Router, private formBuilder: FormBuilder, private typeahead: TypeaheadService, private navCtrl: NavController,
     private sharedservice: SharedDataService, private so: ScreenOrientation) {
     this.createForm();
+    this.form.patchValue({'selectedCancer': this.cancers[0].id});
+  }
+
+
+  // cancer input
+  cancerChanged(ev) {
+      let gene = this.form.get('name')?.value?.name ?? "";
+      let cancer = ev.target.value;
+      // When the analysis changes query the typeahead service for the current gene if it is set
+      this.genes = this.typeahead.getGene(gene, this.analysis, cancer);
+      // Clear out the gene if it doesn't exists for the selected analysis
+      this.genes.subscribe((genes:string[]) => {
+          if(genes.length == 0){
+              this.form.patchValue({'name': ""});
+          }
+      });
   }
 
   // analysis inputs
   analysisChange(ev) {
     this.analysis = ev.target.value;
+    let gene = this.form.get('name')?.value?.name ?? "";
+    let cancer = this.form.get('selectedCancer')?.value ?? "";
+    let cancers = this.analysis == "proteomics" ? this.proteomicCancers : this.cancers;
+    if(cancer == "" || !cancers.some(x => x.id == cancer)){
+        // Preselect the first cancer so that a gene can be selected
+        cancer = cancers[0].id;
+        this.form.patchValue({'selectedCancer': cancer});
+    }
+    // When the analysis changes query the typeahead service for the current gene if it is set
+    this.genes = this.typeahead.getGene(gene, this.analysis, cancer);
+    // Clear out the gene if it doesn't exists for the selected analysis
+    this.genes.subscribe((genes:string[]) => {
+        if(genes.length == 0){
+            this.form.patchValue({'name': ""});
+        }
+    });
   }
 
   // search button
