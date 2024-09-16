@@ -41,7 +41,7 @@
     "@types/jest": "^29.2.4",
     "cordova-android": "^13.0.0",
     "cordova-browser": "^6.0.0",
-    "cordova-ios": "^7.0.1",
+    "cordova-ios": "^7.1.1",
     "cordova-pdf-generator": "^2.1.1",
     "cordova-plugin-android-notch": "^1.0.3",
     "cordova-plugin-device": "~2.0.2",
