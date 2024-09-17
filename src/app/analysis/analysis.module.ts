@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { analysisPage } from './analysis.page';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { HeaderComponentModule } from '../header/header.module';
 import { FooterComponentModule } from '../footer/footer.module';
 

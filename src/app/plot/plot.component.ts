@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 import { TypeaheadService } from '../services/typeahead.service';
 import { SharedDataService } from "../services/SharedDataService.service";
-import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
+import { PDFGenerator } from '@awesome-cordova-plugins/pdf-generator/ngx';
 
 declare var createBoxPlot:any;
 declare var resizeBoxPlot:any;
