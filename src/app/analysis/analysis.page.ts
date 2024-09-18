@@ -138,6 +138,9 @@ export class analysisPage{
   goForward(){
     
     let gene = this.form.get('name')?.value.name;
+    if(!gene){
+      return;
+    } 
     let cancer = this.form.get('selectedCancer')?.value;
     let api = ''
     switch (this.analysis) {
