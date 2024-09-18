@@ -40,9 +40,9 @@
     "@angular/cli": "~18.2.4",
     "@angular/compiler-cli": "^18.2.4",
     "@types/jest": "^29.5.13",
-    "cordova-android": "^10.1.2",
+    "cordova-android": "^13.0.0",
     "cordova-browser": "^6.0.0",
-    "cordova-ios": "^6.3.0",
+    "cordova-ios": "^7.1.1",
     "cordova-pdf-generator": "^2.1.1",
     "cordova-plugin-android-notch": "^1.0.3",
     "cordova-plugin-device": "~3.0.0",
@@ -66,8 +66,8 @@
     },
     "platforms": [
       "browser",
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
