@@ -17,16 +17,13 @@
     "lib": [
       "ES2022",
       "dom"
-    ],
-    
+    ]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
   }
 }
-
-// 
 
 
 

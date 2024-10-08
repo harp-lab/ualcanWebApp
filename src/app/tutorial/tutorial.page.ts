@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
+import { PDFGenerator } from '@awesome-cordova-plugins/pdf-generator/ngx';
 
 @Component({
   selector: 'app-tutorial',

@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 import { TypeaheadService } from '../services/typeahead.service';
 import { SharedDataService } from "../services/SharedDataService.service";
-import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
+import { PDFGenerator } from '@awesome-cordova-plugins/pdf-generator/ngx';
 
 declare var createBoxPlot:any;
 declare var resizeBoxPlot:any;
@@ -63,7 +63,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   ionViewWillEnter(){
-    loadCharts(this.sharedservice.getdata());
+    loadCharts(this.sharedservice.getdata(), this.sharedservice.getanalysis());
     showPlot();
   }
 
@@ -78,10 +78,23 @@ function showPlot(){
     resizeBoxPlot($(`#container${$("#plotSelect").prop("selectedIndex")}`));
   }
 
-function loadCharts(jsonData:any):string{
+function loadCharts(jsonData:any, analysis:string):string{
+    let title = ''
+    switch (analysis) {
+      case 'expression':
+        title = 'expression';
+        break;
+      case 'methylation':
+        title = 'promoter methylation';
+        break;
+      case 'proteomics':
+        title = 'proteomic expression';
+        break;
+      default:
+    }
     let data:any = JSON.parse(jsonData);
     data.plots.forEach((plot:any,index:any) => {
-      $('#plotTitle').html(`<b>${data.gene} expression in ${data.cancer} profile based on&nbsp;&nbsp;</b>`);
+      $('#plotTitle').html(`<b>${data.gene} ${title} in ${data.cancer} profile based on&nbsp;&nbsp;</b>`);
       $('#plotSelect').append(`<option ${plot.selected===true?'selected':''}>${plot.grouping}</option>`);
         $('#plotTable').append(
         `<div align=center id="container${index}x" class="containerx plotDiv" style="height:95%;display:none;">
