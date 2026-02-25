@@ -8,7 +8,8 @@ declare var window:any;
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html', providers: [SharedDataService],
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
+  standalone: false
 })
 export class AppComponent {
   constructor(

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import * as $ from 'jquery'
 import { ICancer } from '../cancer.interface';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -12,7 +11,8 @@ import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/n
 @Component({
   selector: 'app-analysis',
   templateUrl: 'analysis.page.html',
-  styleUrls: ['analysis.page.scss', '../shared.scss']
+  styleUrls: ['analysis.page.scss', '../shared.scss'],
+  standalone: false
 })
 export class analysisPage{
 

@@ -4,7 +4,8 @@ import { PDFGenerator } from '@awesome-cordova-plugins/pdf-generator/ngx';
 @Component({
   selector: 'app-tutorial',
   templateUrl: 'tutorial.page.html',
-  styleUrls: ['tutorial.page.scss', '../shared.scss']
+  styleUrls: ['tutorial.page.scss', '../shared.scss'],
+  standalone: false
 })
 export class TutorialPage {
   constructor(private pdfGenerator: PDFGenerator) {}

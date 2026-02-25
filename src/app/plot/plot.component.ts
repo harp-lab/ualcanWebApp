@@ -13,6 +13,7 @@ declare var resizeBoxPlot:any;
   selector: 'app-plot',
   templateUrl: './plot.component.html',
   styleUrls: ['./plot.component.scss', '../shared.scss'],
+  standalone: false
 })
 export class PlotComponent implements OnInit, AfterViewInit {
 
