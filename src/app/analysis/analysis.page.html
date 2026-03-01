@@ -7,8 +7,11 @@
           <ion-item lines="none">
             <div class="dropdownContainer">
               <ion-label>Cancer</ion-label>
-              <select class="dropdown" formControlName="selectedCancer" (change)="cancerChanged($event)">  <!-- formControlName is used to capture the selected item from the dropdown-->
-                <option *ngFor="let cancer of (analysis == 'proteomics' ? proteomicCancers : cancers); index as i;" value ="{{cancer.id}}">{{cancer.name}}</option>
+              <select class="dropdown" formControlName="selectedCancer" (change)="cancerChanged($event)">
+                @for (cancer of (analysis == 'proteomics' ? proteomicCancers : cancers); track cancer.id)
+                {
+                  <option value="{{cancer.id}}">{{cancer.name}}</option>
+                }
               </select>
             </div>
           </ion-item>
@@ -26,7 +29,7 @@
           <ion-item class="topPad" lines="none">
             <div class="fieldSet" >
               <ion-label>Analysis</ion-label>
-              <ion-radio-group value="expression" (ionChange)="analysisChange($event)">
+              <ion-radio-group value="expression" (ionChange)="analysisChanged($event)">
                 <ion-item lines="none">
                   <ion-radio value="expression" mode="md" justify="start" labelPlacement="fixed">Expression</ion-radio>
                 </ion-item>
@@ -43,7 +46,7 @@
       </div>
     </form>
     <div style="text-align:center">
-      <ion-button (click)='goForward()' class="searchbutton" routerDirection="forward">Search</ion-button>
+      <ion-button (click)='searchClicked()' class="searchbutton" routerDirection="forward">Search</ion-button>
     </div>
   </ion-card>
   <app-footer></app-footer>

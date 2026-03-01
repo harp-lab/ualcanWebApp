@@ -25,13 +25,17 @@
     "@awesome-cordova-plugins/status-bar": "^8.1.0",
     "@ionic/angular": "^8.7.17",
     "@ng-select/ng-select": "^21.4.0",
+    "highcharts": "^12.5.0",
+    "highcharts-angular": "^5.4.0",
+    "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.7",
     "rxjs": "^7.8.2",
+    "svg2pdf.js": "^2.7.0",
     "zone.js": "^0.16.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^21.1.5",
     "@angular/compiler-cli": "^21.1.5",
-    "@types/jquery": "^4.0.0",
     "cordova-android": "^14.0.1",
     "cordova-browser": "^7.0.0",
     "cordova-ios": "^8.0.0",
@@ -58,8 +62,8 @@
     },
     "platforms": [
       "ios",
-      "browser",
-      "android"
+      "android",
+      "browser"
     ]
   }
 }

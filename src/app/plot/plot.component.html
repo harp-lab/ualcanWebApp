@@ -15,10 +15,32 @@
     <div id="plotTable" style="height:100%;text-align:center;overflow-y:scroll">
       <div align="center" class="plotDiv" style="background: #cadbf7; ">
         <div>
-            <font id="plotTitle" size="4" face="arial"></font>
-            <select class="customdrop" id="plotSelect" (change)="show()"></select>
+            <font id="plotTitle" size="4" face="arial"><b>{{title()}}&nbsp;&nbsp;</b></font>
+            <select class="customdrop" id="plotSelect" (change)="show($event)">
+              @for (grouping of groupings(); track grouping)
+              {
+                <option value="{{grouping}}">{{grouping}}</option>
+              }
+            </select>
         </div>
         <br/>
+        <div id="box-plot"></div>
+        @if (statistics().length > 0)
+        { 
+          <table id="plotStatistics" align="center" border="1" style="width:100%;">
+            <tr align="center" style="background-color:#C8F6FE;font-weight:bold;">
+              <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#C8F6FE;font-weight:bold;">Comparison</td>
+              <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#C8F6FE;font-weight:bold;"><b>Statistical significance</b></td>
+            </tr>
+            @for (stat of statistics(); track stat.name)
+            {
+              <tr [ngStyle]="stat.style" align="center">
+                <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">{{stat.name}}</td>
+                <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">{{stat.value}}</td>
+              </tr>
+            }
+          </table>
+        }
       </div>
     </div>
   </ion-card>
