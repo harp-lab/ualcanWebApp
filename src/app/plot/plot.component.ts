@@ -230,6 +230,14 @@ export class PlotComponent implements OnInit, AfterViewInit {
         panning: {
           enabled: true,
           type: 'x'
+        },
+        events: {
+          load: function(){
+						if(this.xAxis[0].max > 10){
+							this.xAxis[0].setExtremes(0, 10); 
+							this.showResetZoom();
+						}
+					}
         }
       },
       // title above the box plot

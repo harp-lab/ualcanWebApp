@@ -21,6 +21,7 @@ export class analysisPage{
   // auto complete
   form: FormGroup;
   genes: Observable<string[]>;
+  isTesting: boolean = false;
 
   createForm() {
     this.form = this.formBuilder.group({
@@ -262,11 +263,17 @@ export class analysisPage{
   Please try again.
   If the problem persists,
   please contact support.`);
-            this.sharedservice.data = this.sharedservice.testData;
-            this.sharedservice.analysis = this.analysis;
-            this.sharedservice.gene = gene;
-            this.sharedservice.cancer = cancer;
-            this.router.navigate(['PlotComponent']);
+          //this.isTesting = true;
+          if (this.isTesting) { 
+              // we are testing, so set some test data
+              this.sharedservice.data = cancer === 'PAN-CANCER' 
+                                        ? this.sharedservice.panCancerTestData
+                                        : this.sharedservice.testData;
+              this.sharedservice.analysis = this.analysis;
+              this.sharedservice.gene = gene;
+              this.sharedservice.cancer = cancer;
+              this.router.navigate(['PlotComponent']);
+            }
           }
 		  });
     }
