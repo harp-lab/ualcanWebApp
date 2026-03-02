@@ -1,8 +1,10 @@
-import { Component, OnInit, AfterViewInit, Signal, signal } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Signal, signal, ElementRef, ViewChild } from '@angular/core';
 import { SharedDataService } from "../services/SharedDataService.service";
+import { PDFGenerator } from '@awesome-cordova-plugins/pdf-generator/ngx';
 import Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-plot',
@@ -21,8 +23,34 @@ export class PlotComponent implements OnInit, AfterViewInit {
   }[]>([]);
   groupings = signal<string[]>([]);
   analysis: string = "";
+  @ViewChild('plotStatistics') tableRef: ElementRef<HTMLElement>;
+  // Use SafeHtml type for the variable
+  public SafeSharedCss: SafeHtml;
+  private readonly sharedCss: string = `
+                      .plotStatisticsTable {
+                        width:100%;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-size: 1.2em;
+                        border: 1px solid black;
+                      }
+                      .plotStatistics{
+                        border: 2.5px solid grey;
+                        vertical-align:middle;
+                        text-align: center;
+                      }
+                      .plotStatisticsHeader{
+                        background-color:#C8F6FE;
+                        font-weight:bold;
+                      }
+                      .plotStatisticsCell{
+                        background-color:#DFFEFC;
+                      }`
 
-  constructor(private sharedservice: SharedDataService) { 
+  constructor(private sharedservice: SharedDataService, private pdfGenerator: PDFGenerator, private sanitizer: DomSanitizer) { 
+    // Tell Angular this string is safe to render as a style tag
+    this.SafeSharedCss = this.sanitizer.bypassSecurityTrustHtml(
+      `<style>${this.sharedCss}</style>`
+    );
   }
 
   // 1. Create a reference to the handler so we can remove it later
@@ -66,8 +94,69 @@ export class PlotComponent implements OnInit, AfterViewInit {
     const chart = this.getChartInstance();
 
     if (chart) {
-      alert('Generating PDF... This may take a moment.');
-    }
+
+      // 1. Get the Chart SVG with fixed dimensions for the PDF
+      // Setting sourceWidth/Height to standard Landscape Letter proportions (~11:8.5)
+      const chartSVG = chart.exporting.getSVG({
+        chart: {
+          width: 1000, 
+          height: 700
+        }
+      });
+
+      const tableHTML = this.tableRef ? this.tableRef.nativeElement.outerHTML : "";
+
+      // 2. Assemble Content with Page Break CSS
+      const finalHTML = `
+        <html>
+          <head>
+            <style>
+              .page-container { width: 100%; }
+              .chart-page { 
+                text-align: center;
+              }
+              .table-page { 
+                break-before: page;       /* Modern CSS3 */
+                page-break-before: always; /* Legacy for older PDF engines */
+                display: block;   
+                padding: 20px; 
+              }
+              ${this.sharedCss}
+            </style>
+          </head>
+          <body>
+            <!-- PAGE 1: The Chart -->
+            <div class="chart-page">
+              ${chartSVG}
+            </div>
+            ${tableHTML ?
+            `<!-- PAGE 2: The Statistics -->
+            <div class="table-page">
+              ${tableHTML}
+            </div>` : ""}
+          </body>
+        </html>
+      `;
+
+      // Generate Timestamp (e.g., 2026-02-23T14-30-00)
+      const timestamp = new Date().toISOString()
+        .replace(/T/, '-')    // Replace T with a hyphen
+        .replace(/\..+/, '')  // Remove milliseconds
+        .replace(/:/g, '');  // Replace colons with spaces for file safety
+      let g = this.sharedservice.gene.toLowerCase();
+      let c = this.sharedservice.cancer.toLowerCase();
+      let a = this.sharedservice.analysis.toLowerCase();
+      let options = {
+        documentSize: 'letter',
+        type: 'share', 
+        fileName: `${g}-${a}-${c}-${timestamp}.pdf`,
+        landscape: 'landscape' as const
+      };
+
+      this.pdfGenerator.fromData(finalHTML, options)
+        .then(base64 => console.log('PDF Created'))
+        .catch(err => console.error(err));
+    }   
   }
 
   ngOnInit() {}
@@ -85,10 +174,6 @@ export class PlotComponent implements OnInit, AfterViewInit {
   }
 
   showPlot(index:number){
-
-    const root = document.documentElement;
-    const safeAreaBottomValueString = getComputedStyle(root).getPropertyValue('--ion-safe-area-bottom');
-    const safeAreaBottomValue = parseFloat(safeAreaBottomValueString.replace('px', ''));
 
     let gene = this.data.gene;
     let cancer = this.data.cancer;
@@ -125,12 +210,13 @@ export class PlotComponent implements OnInit, AfterViewInit {
             var statStyle = statNumber < 0.05 ? {color:'#D55C24', fontWeight:'bold'} : {color:'#131110'};
             return { name: stat.name, value: statString, style: statStyle };
           });
-      this.statistics.set(stats);
+      console.log(stats);
+      this.statistics.set(stats ?? []);
     
     // Get the quartile 3 max so that the y-axis extreme can be dynamically set in landscape mode
     let q3Max, highMax;
-    q3Max = (plotData).map(e => +e.q3).reduce((prev,curr) => curr>prev?curr:prev);
-    highMax = (plotData).map(e => +e.high).reduce((prev,curr) => curr>prev?curr:prev);
+    q3Max = plotData.map(e => +e.q3).reduce((prev,curr) => curr>prev?curr:prev);
+    highMax = plotData.map(e => +e.high).reduce((prev,curr) => curr>prev?curr:prev);
     
     let config: Highcharts.Options = {
       credits: {
@@ -157,11 +243,11 @@ export class PlotComponent implements OnInit, AfterViewInit {
         enabled: false
       },
       xAxis: {
-        categories: (plotData).map(e => `${e.category}<br>(n=${e.n})`),
+        categories: plotData.map(e => `${e.category}<br>(n=${e.n})`),
         lineWidth: 1,
         lineColor: 'black',
         labels: {
-          style: { fontSize: (plotData).length > 5 ? '0.5em' :'0.6em'},
+          style: { fontSize: plotData.length > 5 ? '0.5em' :'0.6em'},
         },
         title: {
           text: `${dataset} samples`,
@@ -197,7 +283,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
           }
         },
       series: [{
-        data: (plotData).map(e => ({
+        data: plotData.map(e => ({
             low : +e.low,
             q1 : +e.q1,
             median : +e.median,

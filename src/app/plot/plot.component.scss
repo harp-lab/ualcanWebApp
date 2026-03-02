@@ -20,6 +20,7 @@
   width:100%;
   height: 90%;
   background: #cadbf7;
+  text-align: center;
 }
 
 #plotTable {
@@ -28,30 +29,17 @@
   overflow-y:scroll
 }
 
+#plotTitle {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
 #box-plot {
     height: 95%;
 }
   
 #box-plot:fullscreen {
     padding-top: env(safe-area-inset-top, 0);
-}
-
-.plotStatisticsTable {
-  width:100%;
-}
-
-.plotStatistics{
-  border: 2.5px solid grey;
-  vertical-align:middle;
-}
-
-.plotStatisticsHeader{
-  background-color:#C8F6FE;
-  font-weight:bold;
-}
-
-.plotStatisticsCell{
-  background-color:#DFFEFC;
 }
 
 html, body {

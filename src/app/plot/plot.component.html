@@ -4,11 +4,9 @@
 <ion-content class="content">
   <ion-card id="plotCard" class="citation-card">
     <div id="plotTable">
-      <div align="center" class="plotDiv">
+      <div class="plotDiv">
         <div>
-            <font id="plotTitle" size="2" face="arial">
-              <b>Group By:&nbsp;&nbsp;</b>
-            </font>
+            <span id="plotTitle">Group By:&nbsp;&nbsp;</span>
             <select class="customdrop" id="plotSelect" (change)="show($event)">
               @for (grouping of groupings(); track grouping)
               {
@@ -19,14 +17,15 @@
         <div id="box-plot"></div>
         @if (statistics().length > 0)
         { 
-          <table id="plotStatistics" align="center" border="1" class="plotStatisticsTable">
-            <tr align="center">
+          <div [innerHTML]="SafeSharedCss"></div>
+          <table #plotStatistics class="plotStatisticsTable">
+            <tr>
               <td class="plotStatistics plotStatisticsHeader">Comparison</td>
-              <td class="plotStatistics plotStatisticsHeader"><b>Statistical significance</b></td>
+              <td class="plotStatistics plotStatisticsHeader">Statistical significance</td>
             </tr>
             @for (stat of statistics(); track stat.name)
             {
-              <tr [ngStyle]="stat.style" align="center">
+              <tr [ngStyle]="stat.style">
                 <td class="plotStatistics plotStatisticsCell">{{stat.name}}</td>
                 <td class="plotStatistics plotStatisticsCell">{{stat.value}}</td>
               </tr>

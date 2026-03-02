@@ -159,7 +159,7 @@ export class analysisPage{
       default:
     }
 
-	let apiUrl = `https://ualcan.path.uab.edu/cgi-bin/${api}?genenam=${gene}&ctype=${cancer}`;
+	  let apiUrl = `https://ualcan.path.uab.edu/cgi-bin/${api}?genenam=${gene}&ctype=${cancer}`;
 
     try
     {
@@ -186,6 +186,8 @@ export class analysisPage{
 					}else{
 						this.sharedservice.data = JSON.stringify(response);
 						this.sharedservice.analysis = this.analysis;
+            this.sharedservice.gene = gene;
+            this.sharedservice.cancer = cancer;
 						this.router.navigate(['PlotComponent']);
 					} 
 				},
@@ -194,8 +196,10 @@ export class analysisPage{
 Please try again.
 If the problem persists,
 please contact support.`);
-          this.sharedservice.data = this.sharedservice.panCancerTestData;
+          this.sharedservice.data = this.sharedservice.testData;
           this.sharedservice.analysis = this.analysis;
+          this.sharedservice.gene = gene;
+          this.sharedservice.cancer = cancer;
           this.router.navigate(['PlotComponent']);
 				}
 		});
