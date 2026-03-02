@@ -1,21 +1,12 @@
 <ion-header class="title-header">
-  <ion-toolbar class="toolbar">
-    <ion-buttons slot="start">
-        <ion-back-button class="backbutton" text="Back" defaultHref="/HomePage"></ion-back-button>
-   </ion-buttons>
-    <ion-buttons slot="end">
-        <ion-button  class="downloadbutton" (click)="downloadHighchart()">
-          download
-        </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <!--This is just to cover the status bar-->
 </ion-header>
 <ion-content class="content">
   <ion-card id="plotCard" class="citation-card">
     <div id="plotTable" style="height:100%;text-align:center;overflow-y:scroll">
       <div align="center" class="plotDiv" style="background: #cadbf7; ">
         <div>
-            <font id="plotTitle" size="4" face="arial"><b>{{title()}}&nbsp;&nbsp;</b></font>
+            <font id="plotTitle" size="2" face="arial"><b>Group By:&nbsp;&nbsp;</b></font>
             <select class="customdrop" id="plotSelect" (change)="show($event)">
               @for (grouping of groupings(); track grouping)
               {
@@ -23,8 +14,7 @@
               }
             </select>
         </div>
-        <br/>
-        <div id="box-plot"></div>
+        <div id="box-plot" style="height:95%;"></div>
         @if (statistics().length > 0)
         { 
           <table id="plotStatistics" align="center" border="1" style="width:100%;">

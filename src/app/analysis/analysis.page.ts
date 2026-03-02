@@ -5,8 +5,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, Observable, throwError, timeout } from 'rxjs';
 import { TypeaheadService } from '../services/typeahead.service';
 import { SharedDataService } from "../services/SharedDataService.service";
-import { NavController } from '@ionic/angular';
-import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -97,9 +95,7 @@ export class analysisPage{
   constructor(public router: Router, 
 			private formBuilder: FormBuilder, 
 			private typeahead: TypeaheadService, 
-			private navCtrl: NavController,
 			private sharedservice: SharedDataService, 
-			private so: ScreenOrientation,
 			private http: HttpClient) {
     this.createForm();
     this.form.patchValue({'selectedCancer': this.cancers[0].id});

@@ -1,10 +1,5 @@
 import { Component, OnInit, AfterViewInit, Signal, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
-
-import { TypeaheadService } from '../services/typeahead.service';
 import { SharedDataService } from "../services/SharedDataService.service";
-import { PDFGenerator } from '@awesome-cordova-plugins/pdf-generator/ngx';
 import Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
@@ -31,15 +26,28 @@ export class PlotComponent implements OnInit, AfterViewInit {
   analysis: string = "";
   title = signal<string>("");
 
-  constructor(private route: ActivatedRoute, private typeahead: TypeaheadService, 
-    private sharedservice: SharedDataService, private so: ScreenOrientation, private pdfGenerator: PDFGenerator) { 
-    
-    // find out changes in orientation
-    this.so.onChange().subscribe(
-      () => {
-        this.resizeBoxPlot();
-      }
-    );
+  constructor(private sharedservice: SharedDataService) { 
+  }
+
+  // 1. Create a reference to the handler so we can remove it later
+  private orientationHandler = () => {
+    // Optional: Add a small timeout if the chart resizes before layout is ready
+    setTimeout(() => this.resizeBoxPlot(), 200);
+  };
+
+  ionViewDidEnter() {
+    // 2. Start listening when the view is active
+    // Standard W3C API supported by modern Android WebViews
+    if (screen.orientation) {
+      screen.orientation.addEventListener('change', this.orientationHandler);
+    }
+  }
+
+  ionViewWillLeave() {
+    // 3. Stop listening the moment the user clicks 'Back'
+    if (screen.orientation) {
+      screen.orientation.removeEventListener('change', this.orientationHandler);
+    }
   }
 
   getChartInstance(): Highcharts.Chart {
@@ -58,79 +66,11 @@ export class PlotComponent implements OnInit, AfterViewInit {
   }
   
   // pdf generator //
-  async downloadHighchart() {
+  downloadHighchart() {
     const chart = this.getChartInstance();
 
     if (chart) {
-      const doc = new jsPDF('l', 'pt', 'a4');
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      
-      // 1. Get High-Res SVG from Highcharts
-      const svgString = (chart as any).exporting.getSVG({
-        chart: {
-          width: 1200,
-          height: 800,
-          marginTop: 50,    
-          marginBottom: 100, 
-          marginLeft: 100,  
-          marginRight: 50,
-          style: {
-            fontFamily: 'Arial, Helvetica, sans-serif'
-          }
-        },
-        xAxis: {
-          title: {
-            enabled: true,
-            useHTML: false, // MANDATORY
-            style: { fontSize: '16px', color: '#000000' }
-          },
-          labels: {
-            enabled: true,
-            useHTML: false, // MANDATORY
-            style: { fontSize: '12px', color: '#000000' }
-          }
-        },
-        yAxis: {
-          title: {
-            enabled: true,
-            useHTML: false, // MANDATORY
-            style: { fontSize: '16px', color: '#000000' }
-          },
-          labels: {
-            enabled: true,
-            useHTML: false, // MANDATORY
-            style: { fontSize: '12px', color: '#000000' }
-          }
-        }
-      });
-
-      // 2. Create a temporary virtual element for svg2pdf to read
-      const parser = new DOMParser();
-      const svgElement = parser.parseFromString(svgString, 'image/svg+xml').documentElement;
-
-      // 3. Draw SVG directly to Page 1
-      // No PNGs, no signatures, no canvas!
-      await doc.svg(svgElement, {
-        x: 40,
-        y: 40,
-        width: pageWidth - 80,
-        height: pageHeight - 80
-      });
-
-      // 4. Add Page 2 for the Table
-      doc.addPage();
-      doc.text('Plot Statistics', 40, 40);
-
-      autoTable(doc, {
-        html: '#plotStatistics', // Your HTML table ID
-        startY: 60,
-        theme: 'grid',
-        useCss: true
-      });
-
-      // 5. Save on Mobile
-      doc.save('Analytics_Report.pdf');
+      alert('Generating PDF... This may take a moment.');
     }
   }
 
@@ -149,13 +89,18 @@ export class PlotComponent implements OnInit, AfterViewInit {
   }
 
   showPlot(index:number){
-    
+
+    const root = document.documentElement;
+    const safeAreaBottomValueString = getComputedStyle(root).getPropertyValue('--ion-safe-area-bottom');
+    const safeAreaBottomValue = parseFloat(safeAreaBottomValueString.replace('px', ''));
+
     let gene = this.data.gene;
     let cancer = this.data.cancer;
     let dataset = this.data.dataset;
     let yAxis = this.data.yAxis;
     let statsData = this.data.plots[index].stats;
     let plotData = this.data.plots[index].data;
+    let grouping = this.data.plots[index].grouping;
 
     let title = ''
       switch (this.analysis) {
@@ -170,7 +115,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
           break;
         default:
       }
-      this.title.set(`${gene} ${title} in ${cancer} profile based on ${dataset}`)
+      //this.title.set(`${gene} ${title} in ${cancer} profile based on ${dataset}`)
       let stats = statsData?.map((stat:any) => {
             var statNumber = Number(stat.value);
             var statString = '';
@@ -197,15 +142,20 @@ export class PlotComponent implements OnInit, AfterViewInit {
       },
       chart: {
         type: 'boxplot',
-        zooming: { singleTouch: false, type: 'xy' },
+        zooming: { 
+          singleTouch: false, 
+          type: 'x' },
         panning: {
           enabled: true,
-          type: 'xy'
-        },
+          type: 'x'
+        }
       },
       // title above the box plot
       title: {
-        text: ""
+        text: `${gene} ${title} in ${cancer} profile based on ${dataset} ${grouping}`,
+        style: {color:'black', fontSize: '1.2em',fontWeight: 'bold'},
+        align: 'center',
+        useHTML: true
       },	
       legend: {
         enabled: false
@@ -215,10 +165,11 @@ export class PlotComponent implements OnInit, AfterViewInit {
         lineWidth: 1,
         lineColor: 'black',
         labels: {
-          style: { fontSize: (plotData).length > 6 ? '0.7em' :'0.8em'},
+          style: { fontSize: (plotData).length > 5 ? '0.5em' :'0.6em'},
         },
         title: {
-          text: `${dataset} samples`,style: {color:'black', fontSize: '0.9em',fontWeight: 'bold'},
+          text: `${dataset} samples`,
+          style: {color:'black', fontSize: '0.9em',fontWeight: 'bold'},
           useHTML: true
         }
       },
@@ -230,10 +181,12 @@ export class PlotComponent implements OnInit, AfterViewInit {
         tickLength: 10,
         tickColor: 'black',
         title: {
-          text: yAxis, style: {color:'black', fontSize: '1.2em',fontWeight: 'bold'}
+          text: yAxis, 
+          style: {color:'black', fontSize: '0.9em',fontWeight: 'bold'},
+          useHTML: true
         },
         labels: {
-          style: {fontSize:'14px', fontFamily: 'arial'},
+          style: {fontSize:'0.6em', fontFamily: 'arial'},
         }
       },
       plotOptions : {
@@ -258,7 +211,8 @@ export class PlotComponent implements OnInit, AfterViewInit {
             color : e.color,
           })),
         tooltip: {
-          headerFormat: `<em>${dataset} samples: {point.key}</em><br/>`
+          headerFormat: `<em>${dataset} samples: {point.key}</em><br/>`,
+          followTouchMove: false,
         },
         animation: false
       }],
@@ -282,6 +236,37 @@ export class PlotComponent implements OnInit, AfterViewInit {
             }
           },
         }]
+      },
+      exporting: {
+        enabled: true,
+        buttons: {
+          contextButton: {
+            menuItems: ['back', 'separator', 'viewFullscreen', 'separator', 'export', 'separator', 'downloadPNG', 'downloadJPEG', 'downloadSVG']
+          }
+        },
+        menuItemDefinitions: {
+            // Custom definition
+            export: {
+                onclick: () => {
+                    this.downloadHighchart();
+                },
+                text: 'Export PDF'
+            },
+            back: {
+                onclick: () => {
+                    window.history.back();
+                },
+                text: 'Go back to search'
+            },
+            viewFullscreen: {
+              text: 'View in full screen'
+            }
+        },
+      },
+      navigation: {
+        buttonOptions: {
+            verticalAlign: 'top', align: 'right'
+        }
       }
     };
 
