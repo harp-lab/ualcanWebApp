@@ -8,7 +8,11 @@
             <div class="dropdownContainer">
               <ion-label>Cancer</ion-label>
               <select class="dropdown" formControlName="selectedCancer" (change)="cancerChanged($event)">
-                @for (cancer of (analysis == 'proteomics' ? proteomicCancers : cancers); track cancer.id)
+                @for (cancer of (analysis == 'proteomics' 
+                                  ? proteomicCancers 
+                                  : (analysis == 'methylation' 
+                                    ? methylationCancers 
+                                    : expressionCancers)); track cancer.id)
                 {
                   <option value="{{cancer.id}}">{{cancer.name}}</option>
                 }

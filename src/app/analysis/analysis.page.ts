@@ -5,7 +5,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, Observable, throwError, timeout } from 'rxjs';
 import { TypeaheadService } from '../services/typeahead.service';
 import { SharedDataService } from "../services/SharedDataService.service";
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+declare var window:any;
 
 @Component({
   selector: 'app-analysis',
@@ -33,7 +35,46 @@ export class analysisPage{
   }
 
   // dropdown list
-  public cancers: Array<ICancer> = [
+  public expressionCancers: Array<ICancer> = [
+    {id:"PAN-CANCER", name:"Pan-cancer"},
+    {id:"ACC", name:"Adrenocortical carcinoma"},
+    {id:"LAML", name:"Acute myeloid leukemia"},
+    {id:"BLCA", name:"Bladder urothelial carcinoma"},
+    {id:"LGG", name:"Brain lower grade glioma"},
+    {id:"BRCA", name:"Breast invasive carcinoma"},
+    {id:"mets500BRCA", name:"Metastatic Breast cancer[MET500 dataset]"},
+    {id:"CESC", name:"Cervical squamous cell carcinoma"},
+    {id:"CHOL", name:"Cholangiocarcinoma"},
+    {id:"COAD", name:"Colon adenocarcinoma"},
+    {id:"ESCA", name:"Esophageal carcinoma"},
+    {id:"GBM", name:"Glioblastoma multiforme"},
+    {id:"HNSC", name:"Head and Neck squamous cell carcinoma"},
+    {id:"KICH", name:"Kidney chromophobe"},
+    {id:"KIRC", name:"Kidney renal clear cell carcinoma"},
+    {id:"KIRP", name:"Kidney renal papillary cell carcinoma"},
+    {id:"LIHC", name:"Liver hepatocellular carcinoma"},
+    {id:"LUAD", name:"Lung adenocarcinoma"},
+    {id:"LUSC", name:"Lung squamous cell carcinoma"},
+    {id:"DLBC", name:"Lymphiod neoplasm diffuse large B-cell lymphoma"},
+    {id:"MESO", name:"Mesothelioma"},
+    {id:"OV", name:"Ovarian serous cystadenocarcinoma"},
+    {id:"PAAD", name:"Pancreatic adenocarcinoma"},
+    {id:"PCPG", name:"Pheochromocytoma and Paraganglioma"},
+    {id:"PRAD", name:"Prostate adenocarcinoma" },
+    {id:"mets500PRAD", name:"Metastatic Prostate cancer[MET500 dataset]" },
+    {id:"READ", name:"Rectum adenocacinoma" },
+    {id:"SARC", name:"Sarcoma"},
+    {id:"SKCM", name:"Skin cutaneous melanoma"},
+    {id:"STAD", name:"Stomach adenocarcinomna"},
+    {id:"TGCT", name:"Testis germ cell tumors"},
+    {id:"THYM", name:"Thymoma"},
+    {id:"THCA", name:"Thyroid carcinoma"},
+    {id:"UVM", name:"Uveal Melanoma"},
+    {id:"UCEC", name:"Uterine corpus endometrial carcinoma"},
+    {id:"UCS", name:"Uterine carcinosarcoma"}
+  ];
+
+  public methylationCancers: Array<ICancer> = [
     {id:"ACC", name:"Adrenocortical carcinoma"},
     {id:"LAML", name:"Acute myeloid leukemia"},
     {id:"BLCA", name:"Bladder urothelial carcinoma"},
@@ -72,6 +113,7 @@ export class analysisPage{
   ];
 
   public proteomicCancers: Array<ICancer> = [
+    {id:"PAN-CANCER", name:"Pan-cancer"},
     {id:"BRCA", name:"Breast cancer"},
     {id:"KIRC", name:"Clear cell RCC"},
     {id:"CCRCCex", name:"Clear cell RCC - Extended"},
@@ -98,9 +140,8 @@ export class analysisPage{
 			private sharedservice: SharedDataService, 
 			private http: HttpClient) {
     this.createForm();
-    this.form.patchValue({'selectedCancer': this.cancers[0].id});
+    this.form.patchValue({'selectedCancer': this.expressionCancers[0].id});
   }
-
 
   // cancer input
   cancerChanged(ev) {
@@ -121,7 +162,11 @@ export class analysisPage{
     this.analysis = ev.target.value;
     let gene = this.form.get('name')?.value?.name ?? "";
     let cancer = this.form.get('selectedCancer')?.value ?? "";
-    let cancers = this.analysis == "proteomics" ? this.proteomicCancers : this.cancers;
+    let cancers = this.analysis == "proteomics" 
+                  ? this.proteomicCancers 
+                  : this.analysis == "methylation" 
+                    ? this.methylationCancers 
+                    : this.expressionCancers;
     if(cancer == "" || !cancers.some(x => x.id == cancer)){
         // Preselect the first cancer so that a gene can be selected
         cancer = cancers[0].id;
@@ -161,51 +206,76 @@ export class analysisPage{
 
 	  let apiUrl = `https://ualcan.path.uab.edu/cgi-bin/${api}?genenam=${gene}&ctype=${cancer}`;
 
+    if (window.plugins?.spinnerDialog) {
+      window.plugins.spinnerDialog.show(null, "Loading...", true);
+    }
+
+    const headers = new HttpHeaders({
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0' // Legacy header for older proxies
+    });
+    
     try
     {
-		this.http.get(apiUrl, {  })
-			.pipe(timeout(10000),
-				catchError(err => {
-					// LOGIC: Translate the error type
-					let finalMessage = 'An unknown error occurred';
-					
-					if (err.name === 'TimeoutError') {
-						finalMessage = 'Connection timed out';
-					} else if (err.status === 404) {
-						finalMessage = 'Resource not found';
-					}
+		  this.http.get(apiUrl, { headers })
+        .pipe(timeout(20000),
+          catchError(err => {
+            if (window.plugins?.spinnerDialog) {
+              window.plugins.spinnerDialog.hide();
+            }
+            
+            // LOGIC: Translate the error type
+            let finalMessage = 'An unknown error occurred';
+            
+            if (err.name === 'TimeoutError') {
+              finalMessage = 'Connection timed out';
+            } else if (err.status === 404) {
+              finalMessage = 'Resource not found';
+            }
 
-					// PASS DOWN: Send the message to the subscribe block
-					return throwError(() => new Error(finalMessage));
-				}))
-			.subscribe({
-				next: (response) => 
-				{
-					if(response==="{}" || response===null || response===undefined){
-						alert(`No data for ${gene} and ${cancer}`);
-					}else{
-						this.sharedservice.data = JSON.stringify(response);
-						this.sharedservice.analysis = this.analysis;
+            // PASS DOWN: Send the message to the subscribe block
+            return throwError(() => new Error(finalMessage));
+          }))
+        .subscribe({
+          next: (response) => {
+            if (window.plugins?.spinnerDialog) {
+              window.plugins.spinnerDialog.hide();
+            }
+
+            if(response==="{}" || response===null || response===undefined){
+              alert(`No data for ${gene} and ${cancer}`);
+            }else{
+              this.sharedservice.data = JSON.stringify(response);
+              this.sharedservice.analysis = this.analysis;
+              this.sharedservice.gene = gene;
+              this.sharedservice.cancer = cancer;
+              this.router.navigate(['PlotComponent']);
+            } 
+          },
+          error: (err) => {
+            if (window.plugins?.spinnerDialog) {
+              window.plugins.spinnerDialog.hide();
+            }
+
+            alert(`UALCAN API Error1: ${err.message}
+  Please try again.
+  If the problem persists,
+  please contact support.`);
+            this.sharedservice.data = this.sharedservice.testData;
+            this.sharedservice.analysis = this.analysis;
             this.sharedservice.gene = gene;
             this.sharedservice.cancer = cancer;
-						this.router.navigate(['PlotComponent']);
-					} 
-				},
-				error: (err) => {
-					alert(`UALCAN API Error1: ${err.message}
-Please try again.
-If the problem persists,
-please contact support.`);
-          this.sharedservice.data = this.sharedservice.testData;
-          this.sharedservice.analysis = this.analysis;
-          this.sharedservice.gene = gene;
-          this.sharedservice.cancer = cancer;
-          this.router.navigate(['PlotComponent']);
-				}
-		});
+            this.router.navigate(['PlotComponent']);
+          }
+		  });
     }
     catch(ex)
     {
+      if (window.plugins?.spinnerDialog) {
+        window.plugins.spinnerDialog.hide();
+      }
+
       alert(`UALCAN API Error2:
 Please try again.
 If the problem persists,
