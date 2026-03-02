@@ -75,7 +75,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   ionViewWillEnter(){
-    this.loadCharts(this.sharedservice.getdata(), this.sharedservice.getanalysis());
+    this.loadCharts(this.sharedservice.data, this.sharedservice.analysis);
     this.showPlot(0);
   }
 
