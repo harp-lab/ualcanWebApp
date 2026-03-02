@@ -3,9 +3,6 @@ import { SharedDataService } from "../services/SharedDataService.service";
 import Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import 'highcharts/modules/exporting';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import 'svg2pdf.js';
 
 @Component({
   selector: 'app-plot',
@@ -24,7 +21,6 @@ export class PlotComponent implements OnInit, AfterViewInit {
   }[]>([]);
   groupings = signal<string[]>([]);
   analysis: string = "";
-  title = signal<string>("");
 
   constructor(private sharedservice: SharedDataService) { 
   }
@@ -115,7 +111,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
           break;
         default:
       }
-      //this.title.set(`${gene} ${title} in ${cancer} profile based on ${dataset}`)
+      
       let stats = statsData?.map((stat:any) => {
             var statNumber = Number(stat.value);
             var statString = '';

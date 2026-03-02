@@ -36,26 +36,21 @@
     padding-top: env(safe-area-inset-top, 0);
 }
 
-#plotStatisticsTable {
+.plotStatisticsTable {
   width:100%;
 }
 
-.plotStatistic{
+.plotStatistics{
   border: 2.5px solid grey;
   vertical-align:middle;
 }
 
-.plotStatisticHeader{
+.plotStatisticsHeader{
   background-color:#C8F6FE;
   font-weight:bold;
 }
 
-.plotStatisticRow{
-  background-color:#C8F6FE;
-  font-weight:bold;
-}
-
-.plotStatisticCell{
+.plotStatisticsCell{
   background-color:#DFFEFC;
 }
 

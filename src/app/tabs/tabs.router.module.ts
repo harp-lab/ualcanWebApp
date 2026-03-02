@@ -18,16 +18,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'tutorial',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../tutorial/tutorial.module').then(m => m.TutorialPageModule)
-          }
-        ]
-      },
-      {
         path: 'analysis',
         children: [
           {

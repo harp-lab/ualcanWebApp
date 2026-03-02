@@ -19,16 +19,16 @@
         <div id="box-plot"></div>
         @if (statistics().length > 0)
         { 
-          <table id="plotStatistics" align="center" border="1" class="plotStatisticTable">
-            <tr align="center" class="plotStatisticRow">
-              <td class="plotStatistic plotStatisticHeader">Comparison</td>
-              <td class="plotStatistic plotStatisticHeader"><b>Statistical significance</b></td>
+          <table id="plotStatistics" align="center" border="1" class="plotStatisticsTable">
+            <tr align="center">
+              <td class="plotStatistics plotStatisticsHeader">Comparison</td>
+              <td class="plotStatistics plotStatisticsHeader"><b>Statistical significance</b></td>
             </tr>
             @for (stat of statistics(); track stat.name)
             {
               <tr [ngStyle]="stat.style" align="center">
-                <td class="plotStatistic plotStatisticCell">{{stat.name}}</td>
-                <td class="plotStatistic plotStatisticCell">{{stat.value}}</td>
+                <td class="plotStatistics plotStatisticsCell">{{stat.name}}</td>
+                <td class="plotStatistics plotStatisticsCell">{{stat.value}}</td>
               </tr>
             }
           </table>
