@@ -3,10 +3,12 @@
 </ion-header>
 <ion-content class="content">
   <ion-card id="plotCard" class="citation-card">
-    <div id="plotTable" style="height:100%;text-align:center;overflow-y:scroll">
-      <div align="center" class="plotDiv" style="background: #cadbf7; ">
+    <div id="plotTable">
+      <div align="center" class="plotDiv">
         <div>
-            <font id="plotTitle" size="2" face="arial"><b>Group By:&nbsp;&nbsp;</b></font>
+            <font id="plotTitle" size="2" face="arial">
+              <b>Group By:&nbsp;&nbsp;</b>
+            </font>
             <select class="customdrop" id="plotSelect" (change)="show($event)">
               @for (grouping of groupings(); track grouping)
               {
@@ -14,19 +16,19 @@
               }
             </select>
         </div>
-        <div id="box-plot" style="height:95%;"></div>
+        <div id="box-plot"></div>
         @if (statistics().length > 0)
         { 
-          <table id="plotStatistics" align="center" border="1" style="width:100%;">
-            <tr align="center" style="background-color:#C8F6FE;font-weight:bold;">
-              <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#C8F6FE;font-weight:bold;">Comparison</td>
-              <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#C8F6FE;font-weight:bold;"><b>Statistical significance</b></td>
+          <table id="plotStatistics" align="center" border="1" class="plotStatisticTable">
+            <tr align="center" class="plotStatisticRow">
+              <td class="plotStatistic plotStatisticHeader">Comparison</td>
+              <td class="plotStatistic plotStatisticHeader"><b>Statistical significance</b></td>
             </tr>
             @for (stat of statistics(); track stat.name)
             {
               <tr [ngStyle]="stat.style" align="center">
-                <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">{{stat.name}}</td>
-                <td style="border: 2.5px solid grey;vertical-align:middle;background-color:#DFFEFC;">{{stat.value}}</td>
+                <td class="plotStatistic plotStatisticCell">{{stat.name}}</td>
+                <td class="plotStatistic plotStatisticCell">{{stat.value}}</td>
               </tr>
             }
           </table>

@@ -19,10 +19,44 @@
   border: 1px solid #FFF;
   width:100%;
   height: 90%;
+  background: #cadbf7;
+}
+
+#plotTable {
+  height:100%;
+  text-align:center;
+  overflow-y:scroll
+}
+
+#box-plot {
+    height: 95%;
 }
   
 #box-plot:fullscreen {
     padding-top: env(safe-area-inset-top, 0);
+}
+
+#plotStatisticsTable {
+  width:100%;
+}
+
+.plotStatistic{
+  border: 2.5px solid grey;
+  vertical-align:middle;
+}
+
+.plotStatisticHeader{
+  background-color:#C8F6FE;
+  font-weight:bold;
+}
+
+.plotStatisticRow{
+  background-color:#C8F6FE;
+  font-weight:bold;
+}
+
+.plotStatisticCell{
+  background-color:#DFFEFC;
 }
 
 html, body {
