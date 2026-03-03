@@ -30,7 +30,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
                       .plotStatisticsTable {
                         width:100%;
                         font-family: Arial, Helvetica, sans-serif;
-                        font-size: 1.2em;
+                        font-size: 0.9em;
                         border: 1px solid black;
                       }
                       .plotStatistics{
@@ -226,7 +226,15 @@ export class PlotComponent implements OnInit, AfterViewInit {
         type: 'boxplot',
         zooming: { 
           singleTouch: false, 
-          type: 'x' },
+          pinchType: 'x',
+          type: 'x',
+          resetButton: {
+            position: {
+              align: 'right',
+              verticalAlign: 'top'
+            }
+          },
+        },
         panning: {
           enabled: true,
           type: 'x'
@@ -235,7 +243,6 @@ export class PlotComponent implements OnInit, AfterViewInit {
           load: function(){
 						if(this.xAxis[0].max > 10){
 							this.xAxis[0].setExtremes(0, 10); 
-							this.showResetZoom();
 						}
 					}
         }
@@ -261,6 +268,16 @@ export class PlotComponent implements OnInit, AfterViewInit {
           text: `${dataset} samples`,
           style: {color:'black', fontSize: '0.9em',fontWeight: 'bold'},
           useHTML: true
+        },
+        events: {
+          afterSetExtremes: function(e) {
+            // Check if we are zoomed in: Does the current view (min/max) 
+            // match the total data range (dataMin/dataMax)?
+            let isZoomed = (e.min > e.dataMin || e.max < e.dataMax);
+            if(isZoomed){
+              this.chart.showResetZoom();
+            }
+          }
         }
       },
       yAxis: {
@@ -287,9 +304,9 @@ export class PlotComponent implements OnInit, AfterViewInit {
           medianWidth: plotData.medianWidth,
           stemColor: 'black',
           whiskerColor: 'black',
-          whiskerWidth: 1.5,
-          }
-        },
+          whiskerWidth: 1.5
+        }
+      },
       series: [{
         data: plotData.map(e => ({
             low : +e.low,
@@ -300,12 +317,12 @@ export class PlotComponent implements OnInit, AfterViewInit {
             fillColor : e.color,
             color : e.color,
           })),
-        tooltip: {
-          headerFormat: `<em>${dataset} samples: {point.key}</em><br/>`,
-          followTouchMove: false,
-        },
         animation: false
       }],
+      tooltip: {
+        headerFormat: `<em>${dataset} samples: {point.key}</em><br/>`,
+        followTouchMove: false
+      },
       responsive: {
         rules: [{
           condition: {

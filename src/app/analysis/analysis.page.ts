@@ -263,7 +263,7 @@ export class analysisPage{
   Please try again.
   If the problem persists,
   please contact support.`);
-          //this.isTesting = true;
+          this.isTesting = false;
           if (this.isTesting) { 
               // we are testing, so set some test data
               this.sharedservice.data = cancer === 'PAN-CANCER' 

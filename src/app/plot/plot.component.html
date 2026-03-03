@@ -3,10 +3,10 @@
 </ion-header>
 <ion-content class="content">
   <ion-card id="plotCard" class="citation-card">
-    <div id="plotTable">
-      <div class="plotDiv">
+    <div class="plotTable">
+      <div class="container">
         <div>
-            <span id="plotTitle">Group By:&nbsp;&nbsp;</span>
+            <span class="plotTitle">Group By:&nbsp;&nbsp;</span>
             <select class="customdrop" id="plotSelect" (change)="show($event)">
               @for (grouping of groupings(); track grouping)
               {
@@ -14,7 +14,7 @@
               }
             </select>
         </div>
-        <div id="box-plot"></div>
+        <div id="box-plot" class="boxPlot"></div>
         @if (statistics().length > 0)
         { 
           <div [innerHTML]="SafeSharedCss"></div>

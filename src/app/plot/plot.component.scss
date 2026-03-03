@@ -13,32 +13,35 @@
   padding-bottom: 5px;
 }
 
-.plotDiv {
+.container {
   border-style: solid;
   color: #47433F;
   border: 1px solid #FFF;
   width:100%;
-  height: 90%;
+  height: 100%;
   background: #cadbf7;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
-#plotTable {
+.plotTable {
   height:100%;
   text-align:center;
   overflow-y:scroll
 }
 
-#plotTitle {
+.plotTitle {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
 }
 
-#box-plot {
-    height: 95%;
+.boxPlot {
+  flex-grow: 1; 
+  min-height: 90%;
 }
   
-#box-plot:fullscreen {
+.boxPlot:fullscreen {
     padding-top: env(safe-area-inset-top, 0);
 }
 
