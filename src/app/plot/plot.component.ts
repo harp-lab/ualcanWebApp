@@ -96,35 +96,51 @@ export class PlotComponent implements OnInit, AfterViewInit {
     if (chart) {
 
       let orientation = 'landscape';
-
+      let height = chart.chartHeight;
+      let width = chart.chartWidth;
+      
       // 1. Get the screen orientation so we can match the export to the screen
       if (screen.orientation) {
         orientation = screen.orientation.type.includes('landscape') ? 'landscape' : 'portrait';
+        if(orientation === 'landscape'){
+          let multiplier = Math.min(1000 / width, 700 / height);
+          width = width * multiplier;
+          height = height * multiplier;
+        }else{
+          let multiplier = Math.min(700 / width, 1000 / height);
+          width = width * multiplier;
+          height = height * multiplier;
+        }
       }
       
       // 2. Get the Chart SVG with fixed dimensions for the PDF
       // Setting sourceWidth/Height to standard Letter proportions (~11:8.5)
       const chartSVG = chart.exporting.getSVG({
         chart: {
-          width: orientation == 'landscape' ? 1000 : 700, 
-          height: orientation == 'landscape' ? 700 : 1000,
+          height: height,
+          width: width,  
           events: {
           load: function(){
-					}
-        }
+            }
+          }
         }
       });
 
+      // 3. Get the table HTML if it exists
       const tableHTML = this.tableRef ? this.tableRef.nativeElement.outerHTML : "";
 
-      // 3. Assemble Content with Page Break CSS
+      // 4. Assemble Content with Page Break CSS
       const finalHTML = `
         <html>
           <head>
             <style>
-              .page-container { width: 100%; }
-              .chart-page { 
-                text-align: center;
+              .chart-page {
+                display: flex;
+                flex-direction: column;
+                justify-content: center; 
+                align-items: center;     
+                height: 100%;           
+                width: 100%;
               }
               .table-page { 
                 break-before: page;       /* Modern CSS3 */
@@ -149,7 +165,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
         </html>
       `;
 
-      // 4. Generate Timestamp (e.g., 2026-02-23T14-30-00)
+      // 5. Generate Timestamp (e.g., 2026-02-23T14-30-00)
       const timestamp = new Date().toISOString()
         .replace(/T/, '-')    // Replace T with a hyphen
         .replace(/\..+/, '')  // Remove milliseconds
@@ -164,6 +180,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
         landscape: orientation === 'landscape' ? 'landscape' as const : 'portrait' as const
       };
 
+      // 6. Generate the PDF
       this.pdfGenerator.fromData(finalHTML, options)
         .then(base64 => console.log('PDF Created'))
         .catch(err => console.error(err));
