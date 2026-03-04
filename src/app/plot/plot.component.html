@@ -8,15 +8,18 @@
     </div>
     <div class="plotTable">
       <div class="container">
-        <div>
-            <span class="plotTitle">Group By:&nbsp;&nbsp;</span>
-            <select class="customdrop" id="plotSelect" (change)="show($event)">
-              @for (grouping of groupings(); track grouping)
-              {
-                <option value="{{grouping}}">{{grouping}}</option>
-              }
-            </select>
-        </div>
+        @if (groupings().length > 1)
+        { 
+          <div>
+              <span class="plotTitle">Group By:&nbsp;&nbsp;</span>
+              <select class="customdrop" id="plotSelect" (change)="show($event)">
+                @for (grouping of groupings(); track grouping)
+                {
+                  <option value="{{grouping}}">{{grouping}}</option>
+                }
+              </select>
+          </div>
+        }
         <div id="box-plot" class="boxPlot"></div>
         @if (statistics().length > 0)
         { 
