@@ -95,18 +95,29 @@ export class PlotComponent implements OnInit, AfterViewInit {
 
     if (chart) {
 
-      // 1. Get the Chart SVG with fixed dimensions for the PDF
-      // Setting sourceWidth/Height to standard Landscape Letter proportions (~11:8.5)
+      let orientation = 'landscape';
+
+      // 1. Get the screen orientation so we can match the export to the screen
+      if (screen.orientation) {
+        orientation = screen.orientation.type.includes('landscape') ? 'landscape' : 'portrait';
+      }
+      
+      // 2. Get the Chart SVG with fixed dimensions for the PDF
+      // Setting sourceWidth/Height to standard Letter proportions (~11:8.5)
       const chartSVG = chart.exporting.getSVG({
         chart: {
-          width: 1000, 
-          height: 700
+          width: orientation == 'landscape' ? 1000 : 700, 
+          height: orientation == 'landscape' ? 700 : 1000,
+          events: {
+          load: function(){
+					}
+        }
         }
       });
 
       const tableHTML = this.tableRef ? this.tableRef.nativeElement.outerHTML : "";
 
-      // 2. Assemble Content with Page Break CSS
+      // 3. Assemble Content with Page Break CSS
       const finalHTML = `
         <html>
           <head>
@@ -138,7 +149,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
         </html>
       `;
 
-      // Generate Timestamp (e.g., 2026-02-23T14-30-00)
+      // 4. Generate Timestamp (e.g., 2026-02-23T14-30-00)
       const timestamp = new Date().toISOString()
         .replace(/T/, '-')    // Replace T with a hyphen
         .replace(/\..+/, '')  // Remove milliseconds
@@ -150,7 +161,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
         documentSize: 'letter',
         type: 'share', 
         fileName: `${g}-${a}-${c}-${timestamp}.pdf`,
-        landscape: 'landscape' as const
+        landscape: orientation === 'landscape' ? 'landscape' as const : 'portrait' as const
       };
 
       this.pdfGenerator.fromData(finalHTML, options)
@@ -274,8 +285,9 @@ export class PlotComponent implements OnInit, AfterViewInit {
             // Check if we are zoomed in: Does the current view (min/max) 
             // match the total data range (dataMin/dataMax)?
             let isZoomed = (e.min > e.dataMin || e.max < e.dataMax);
-            if(isZoomed){
-              this.chart.showResetZoom();
+            const chart = this.chart as any;
+            if (isZoomed && !chart.resetZoomButton) {
+                chart.showResetZoom();
             }
           }
         }
