@@ -243,8 +243,7 @@ export class analysisPage{
             if (window.plugins?.spinnerDialog) {
               window.plugins.spinnerDialog.hide();
             }
-
-            if(response==="{}" || response===null || response===undefined){
+            if(response===null || response===undefined || JSON.stringify(response)=="{}"){
               alert(`No data for ${gene} and ${cancer}`);
             }else{
               this.sharedservice.data = JSON.stringify(response);
