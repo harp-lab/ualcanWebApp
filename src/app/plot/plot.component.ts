@@ -52,26 +52,23 @@ export class PlotComponent implements OnInit, AfterViewInit {
       `<style>${this.sharedCss}</style>`
     );
   }
-
+  
   // 1. Create a reference to the handler so we can remove it later
   private orientationHandler = () => {
     // Optional: Add a small timeout if the chart resizes before layout is ready
     setTimeout(() => this.resizeBoxPlot(), 200);
   };
 
+  private mediaQuery = window.matchMedia("(orientation: portrait)");
+
   ionViewDidEnter() {
-    // 2. Start listening when the view is active
-    // Standard W3C API supported by modern Android WebViews
-    if (screen.orientation) {
-      screen.orientation.addEventListener('change', this.orientationHandler);
-    }
+    // Start listening when the view is active
+    this.mediaQuery.addEventListener("change", this.orientationHandler);
   }
 
   ionViewWillLeave() {
-    // 3. Stop listening the moment the user clicks 'Back'
-    if (screen.orientation) {
-      screen.orientation.removeEventListener('change', this.orientationHandler);
-    }
+    // Stop listening the moment the user clicks 'Back'
+    this.mediaQuery.removeEventListener('change', this.orientationHandler);
   }
 
   getChartInstance(): Highcharts.Chart {
@@ -95,22 +92,19 @@ export class PlotComponent implements OnInit, AfterViewInit {
 
     if (chart) {
 
-      let orientation = 'landscape';
       let height = chart.chartHeight;
       let width = chart.chartWidth;
       
       // 1. Get the screen orientation so we can match the export to the screen
-      if (screen.orientation) {
-        orientation = screen.orientation.type.includes('landscape') ? 'landscape' : 'portrait';
-        if(orientation === 'landscape'){
-          let multiplier = Math.min(1000 / width, 700 / height);
-          width = width * multiplier;
-          height = height * multiplier;
-        }else{
-          let multiplier = Math.min(700 / width, 1000 / height);
-          width = width * multiplier;
-          height = height * multiplier;
-        }
+      const orientation = this.mediaQuery.matches ? 'portrait' : 'landscape';
+      if(orientation === 'landscape'){
+        let multiplier = Math.min(1000 / width, 700 / height);
+        width = width * multiplier;
+        height = height * multiplier;
+      }else{
+        let multiplier = Math.min(700 / width, 1000 / height);
+        width = width * multiplier;
+        height = height * multiplier;
       }
       
       // 2. Get the Chart SVG with fixed dimensions for the PDF
@@ -238,7 +232,6 @@ export class PlotComponent implements OnInit, AfterViewInit {
             var statStyle = statNumber < 0.05 ? {color:'#D55C24', fontWeight:'bold'} : {color:'#131110'};
             return { name: stat.name, value: statString, style: statStyle };
           });
-      console.log(stats);
       this.statistics.set(stats ?? []);
     
     // Get the quartile 3 max so that the y-axis extreme can be dynamically set in landscape mode
@@ -377,7 +370,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
         enabled: true,
         buttons: {
           contextButton: {
-            menuItems: ['back', 'separator', 'viewFullscreen', 'separator', 'export', 'separator', 'downloadPNG', 'downloadJPEG', 'downloadSVG']
+            menuItems: ['back', 'separator', 'viewFullscreen', 'separator', 'export']
           }
         },
         menuItemDefinitions: {

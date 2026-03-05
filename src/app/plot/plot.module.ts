@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { FooterComponentModule } from '../footer/footer.module';
 
 @NgModule({
@@ -18,9 +17,7 @@ import { FooterComponentModule } from '../footer/footer.module';
     declarations: [
       PlotComponent
     ],
-    providers: [
-      ScreenOrientation
-    ],
+    providers: [],
   })
   export class PlotComponentModule {}
   

@@ -40,10 +40,10 @@
     "cordova-browser": "^7.0.0",
     "cordova-ios": "^8.0.0",
     "cordova-pdf-generator": "^2.1.1",
-    "cordova-plugin-android-notch": "^1.0.3",
     "cordova-plugin-device": "~3.0.0",
     "cordova-plugin-file": "^8.1.3",
     "cordova-plugin-inappbrowser": "^6.0.0",
+    "cordova-plugin-inset-injector": "github:ionic-team/cordova-plugin-inset-injector",
     "cordova-plugin-spinnerdialog": "^1.3.2",
     "cordova-plugin-statusbar": "^4.0.0",
     "es6-promise-plugin": "^4.2.2",
@@ -57,15 +57,17 @@
       },
       "cordova-pdf-generator": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-android-notch": {},
-      "cordova-plugin-screen-orientation": {},
       "cordova-plugin-inappbrowser": {},
-      "cordova-plugin-spinnerdialog": {}
+      "cordova-plugin-spinnerdialog": {},
+      "cordova-plugin-inset-injector": {}
     },
     "platforms": [
       "ios",
       "browser",
       "android"
     ]
+  },
+  "overrides": {
+    "jspdf": "^4.2.0"
   }
 }

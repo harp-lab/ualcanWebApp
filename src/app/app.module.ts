@@ -8,7 +8,6 @@ import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HttpClientModule} from '@angular/common/http';
 
 // pdf generator //
 import { PDFGenerator } from '@awesome-cordova-plugins/pdf-generator/ngx'
@@ -21,7 +20,7 @@ import { FooterComponentModule } from './footer/footer.module';
   declarations: [
     AppComponent
   ],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, HeaderComponentModule, FooterComponentModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HeaderComponentModule, FooterComponentModule],
   providers: [
     StatusBar,
     SplashScreen,
