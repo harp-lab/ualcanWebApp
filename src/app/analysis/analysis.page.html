@@ -8,6 +8,7 @@
             <div class="dropdownContainer">
               <ion-label>Cancer</ion-label>
               <select class="dropdown" formControlName="selectedCancer" (change)="cancerChanged($event)">
+                @let analysis = form.get('selectedAnalysis')?.value;
                 @for (cancer of (analysis == 'proteomics' 
                                   ? proteomicCancers 
                                   : (analysis == 'methylation' 
@@ -19,31 +20,25 @@
               </select>
             </div>
           </ion-item>
-          <ion-item class="topPad" lines="none">
+          <ion-item lines="none">
             <div class="dropdownContainer">
               <ion-label>Gene</ion-label>
               <ng-select class="dropdown" [items]="genes | async" bindLabel="name"
-                         formControlName="name" notFoundText="No records found"
-                         [multiple]="false"
-                         appendTo="#containervalue"
-                         (keyup)="getGeneName($event)">
+                        formControlName="selectedGene" notFoundText="No records found"
+                        [multiple]="false"
+                        appendTo="#containervalue"
+                        (keyup)="getGeneName($event)">
               </ng-select>
             </div>
           </ion-item>
-          <ion-item class="topPad" lines="none">
-            <div class="fieldSet" >
+          <ion-item lines="none">
+            <div class="dropdownContainer">
               <ion-label>Analysis</ion-label>
-              <ion-radio-group value="expression" (ionChange)="analysisChanged($event)">
-                <ion-item lines="none">
-                  <ion-radio value="expression" mode="md" justify="start" labelPlacement="fixed">Expression</ion-radio>
-                </ion-item>
-                <ion-item lines="none">
-                  <ion-radio value="methylation" mode="md" justify="start" labelPlacement="fixed">Methylation</ion-radio>
-                </ion-item>
-                <ion-item lines="none">
-                  <ion-radio value="proteomics" mode="md" justify="start" labelPlacement="fixed">Proteomics</ion-radio>
-                </ion-item>
-              </ion-radio-group>
+              <select class="dropdown" formControlName="selectedAnalysis" (change)="analysisChanged($event)">
+                <option value="expression">Expression</option>
+                <option value="methylation">Methylation</option>
+                <option value="proteomics">Proteomics</option>
+              </select>
             </div>
           </ion-item>
         </ion-list>

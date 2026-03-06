@@ -25,14 +25,16 @@ export class analysisPage{
 
   createForm() {
     this.form = this.formBuilder.group({
-      name: [],
-      selectedCancer:[]
+      selectedGene: [],
+      selectedCancer:[],
+      selectedAnalysis: ['expression']
     });
   }
   
   getGeneName(event:any) {
-    let cancerId = this.form.get('selectedCancer')?.value;
-    this.genes = this.typeahead.getGene(event.target.value, this.analysis, cancerId);
+    let analysis = this.form.get('selectedAnalysis').value;
+    let cancer = this.form.get('selectedCancer').value;
+    this.genes = this.typeahead.getGene(event.target.value, analysis, cancer);
   }
 
   // dropdown list
@@ -133,8 +135,6 @@ export class analysisPage{
     {id:"PRAD", name:"Prostate cancer"}
   ];
 
-  public analysis:string = "expression";
-
   constructor(public router: Router, 
 			private formBuilder: FormBuilder, 
 			private typeahead: TypeaheadService, 
@@ -146,26 +146,27 @@ export class analysisPage{
 
   // cancer input
   cancerChanged(ev) {
-      let gene = this.form.get('name')?.value?.name ?? "";
-      let cancer = ev.target.value;
-      // When the analysis changes query the typeahead service for the current gene if it is set
-      this.genes = this.typeahead.getGene(gene, this.analysis, cancer);
-      // Clear out the gene if it doesn't exists for the selected analysis
-      this.genes.subscribe((genes:string[]) => {
-          if(genes.length == 0){
-              this.form.patchValue({'name': ""});
-          }
-      });
+    let analysis = this.form.get('selectedAnalysis').value;
+    let gene = this.form.get('selectedGene')?.value?.name;
+    let cancer = ev.target.value;
+    // When the analysis changes query the typeahead service for the current gene if it is set
+    this.genes = this.typeahead.getGene(gene, analysis, cancer);
+    // Clear out the gene if it doesn't exists for the selected analysis
+    this.genes.subscribe((genes:string[]) => {
+        if(genes.length == 0){
+            this.form.patchValue({'selectedGene': ""});
+        }
+    });
   }
 
   // analysis inputs
   analysisChanged(ev) {
-    this.analysis = ev.target.value;
-    let gene = this.form.get('name')?.value?.name ?? "";
-    let cancer = this.form.get('selectedCancer')?.value ?? "";
-    let cancers = this.analysis == "proteomics" 
+    let analysis = ev.target.value;
+    let gene = this.form.get('selectedGene')?.value?.name;
+    let cancer = this.form.get('selectedCancer').value;
+    let cancers = analysis == "proteomics" 
                   ? this.proteomicCancers 
-                  : this.analysis == "methylation" 
+                  : analysis == "methylation" 
                     ? this.methylationCancers 
                     : this.expressionCancers;
     if(cancer == "" || !cancers.some(x => x.id == cancer)){
@@ -174,25 +175,25 @@ export class analysisPage{
         this.form.patchValue({'selectedCancer': cancer});
     }
     // When the analysis changes query the typeahead service for the current gene if it is set
-    this.genes = this.typeahead.getGene(gene, this.analysis, cancer);
+    this.genes = this.typeahead.getGene(gene, analysis, cancer);
     // Clear out the gene if it doesn't exists for the selected analysis
     this.genes.subscribe((genes:string[]) => {
         if(genes.length == 0){
-            this.form.patchValue({'name': ""});
+            this.form.patchValue({'selectedGene': ""});
         }
     });
   }
 
   // search button
   searchClicked(){
-    
-    let gene = this.form.get('name')?.value.name;
+    let gene = this.form.get('selectedGene')?.value?.name;
     if(!gene){
       return;
     } 
-    let cancer = this.form.get('selectedCancer')?.value;
+    let analysis = this.form.get('selectedAnalysis').value;
+    let cancer = this.form.get('selectedCancer').value;
     let api = ''
-    switch (this.analysis) {
+    switch (analysis) {
       case 'expression':
         api = 'ualcan-gene-json.pl';
         break;
@@ -247,7 +248,7 @@ export class analysisPage{
               alert(`No data for ${gene} and ${cancer}`);
             }else{
               this.sharedservice.data = JSON.stringify(response);
-              this.sharedservice.analysis = this.analysis;
+              this.sharedservice.analysis = analysis;
               this.sharedservice.gene = gene;
               this.sharedservice.cancer = cancer;
               this.router.navigate(['PlotComponent']);
@@ -268,7 +269,7 @@ export class analysisPage{
               this.sharedservice.data = cancer === 'PAN-CANCER' 
                                         ? this.sharedservice.panCancerTestData
                                         : this.sharedservice.testData;
-              this.sharedservice.analysis = this.analysis;
+              this.sharedservice.analysis = analysis;
               this.sharedservice.gene = gene;
               this.sharedservice.cancer = cancer;
               this.router.navigate(['PlotComponent']);
