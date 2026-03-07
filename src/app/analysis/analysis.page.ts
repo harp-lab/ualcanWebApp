@@ -211,16 +211,10 @@ export class analysisPage{
     if (window.plugins?.spinnerDialog) {
       window.plugins.spinnerDialog.show(null, "Loading...", true);
     }
-
-    const headers = new HttpHeaders({
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0' // Legacy header for older proxies
-    });
     
     try
     {
-		  this.http.get(apiUrl, { headers })
+		  this.http.get(apiUrl)
         .pipe(timeout(20000),
           catchError(err => {
             if (window.plugins?.spinnerDialog) {
