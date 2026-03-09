@@ -85,9 +85,9 @@ export class PlotComponent implements OnInit, AfterViewInit {
       chart.reflow();
     }
   }
-  
-  // pdf generator //
-  downloadHighchart() {
+
+  getChartSVG(): string{
+    let chartSVG = "";
     const chart = this.getChartInstance();
 
     if (chart) {
@@ -95,7 +95,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
       let height = chart.chartHeight;
       let width = chart.chartWidth;
       
-      // 1. Get the screen orientation so we can match the export to the screen
+      // Get the screen orientation so we can match the export to the screen
       const orientation = this.mediaQuery.matches ? 'portrait' : 'landscape';
       if(orientation === 'landscape'){
         let multiplier = Math.min(1000 / width, 700 / height);
@@ -107,9 +107,9 @@ export class PlotComponent implements OnInit, AfterViewInit {
         height = height * multiplier;
       }
       
-      // 2. Get the Chart SVG with fixed dimensions for the PDF
+      // Get the Chart SVG with fixed dimensions for the PDF
       // Setting sourceWidth/Height to standard Letter proportions (~11:8.5)
-      const chartSVG = chart.exporting.getSVG({
+      chartSVG = chart.exporting.getSVG({
         chart: {
           height: height,
           width: width,  
@@ -119,6 +119,28 @@ export class PlotComponent implements OnInit, AfterViewInit {
           }
         }
       });
+    }
+    return chartSVG;
+  }
+
+  getFilename(): string{
+    // Generate Timestamp (e.g., 2026-02-23T14-30-00)
+      const timestamp = new Date().toISOString()
+        .replace(/T/, '-')    // Replace T with a hyphen
+        .replace(/\..+/, '')  // Remove milliseconds
+        .replace(/:/g, '');  // Replace colons
+      let g = this.sharedservice.gene.toLowerCase();
+      let c = this.sharedservice.cancer.toLowerCase();
+      let a = this.sharedservice.analysis.toLowerCase();
+
+      return `${g}-${a}-${c}-${timestamp}`;
+  }
+  
+  // pdf generator //
+  downloadHighchart() {
+    let chartSVG = this.getChartSVG();
+
+    if (chartSVG) {
 
       // 3. Get the table HTML if it exists
       const tableHTML = this.tableRef ? this.tableRef.nativeElement.outerHTML : "";
@@ -159,26 +181,48 @@ export class PlotComponent implements OnInit, AfterViewInit {
         </html>
       `;
 
-      // 5. Generate Timestamp (e.g., 2026-02-23T14-30-00)
-      const timestamp = new Date().toISOString()
-        .replace(/T/, '-')    // Replace T with a hyphen
-        .replace(/\..+/, '')  // Remove milliseconds
-        .replace(/:/g, '');  // Replace colons with spaces for file safety
-      let g = this.sharedservice.gene.toLowerCase();
-      let c = this.sharedservice.cancer.toLowerCase();
-      let a = this.sharedservice.analysis.toLowerCase();
+      // Get the screen orientation so we can match the export to the screen
+      const orientation = this.mediaQuery.matches ? 'portrait' : 'landscape';
+      
+      let filename = this.getFilename();
+
       let options = {
         documentSize: 'letter',
         type: 'share', 
-        fileName: `${g}-${a}-${c}-${timestamp}.pdf`,
+        fileName: `${filename}.pdf`,
         landscape: orientation === 'landscape' ? 'landscape' as const : 'portrait' as const
       };
 
-      // 6. Generate the PDF
+      // Generate the PDF
       this.pdfGenerator.fromData(finalHTML, options)
         .then(base64 => console.log('PDF Created'))
         .catch(err => console.error(err));
     }   
+  }
+
+  createChartPNG(){
+    let chartSVG = this.getChartSVG();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+
+    img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        const base64Data = canvas.toDataURL('image/png');
+        this.shareChart(base64Data);
+    };
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(chartSVG)));
+  }
+
+  shareChart(imgData) {
+    (window as any).plugins?.socialsharing.share(
+        'Check out this chart!',
+        this.getFilename(),
+        imgData,
+        null
+    );
   }
 
   ngOnInit() {}
@@ -370,25 +414,28 @@ export class PlotComponent implements OnInit, AfterViewInit {
         enabled: true,
         buttons: {
           contextButton: {
-            menuItems: ['back', 'separator', 'viewFullscreen', 'separator', 'export']
+            menuItems: ['back', 'separator', 'export', 'separator', 'share', ]
           }
         },
         menuItemDefinitions: {
             // Custom definition
             export: {
-                onclick: () => {
-                    this.downloadHighchart();
-                },
-                text: 'Export PDF'
+              onclick: () => {
+                  this.downloadHighchart();
+              },
+              text: 'Export PDF'
             },
             back: {
-                onclick: () => {
-                    window.history.back();
-                },
-                text: 'Go back to search'
+              onclick: () => {
+                  window.history.back();
+              },
+              text: 'Go Back'
             },
-            viewFullscreen: {
-              text: 'View in full screen'
+            share: {
+              onclick: () => {
+                this.createChartPNG();
+              },
+              text: 'Share PNG'
             }
         },
       },
@@ -400,7 +447,6 @@ export class PlotComponent implements OnInit, AfterViewInit {
     };
 
     Highcharts.chart("box-plot", config);
-
 }
 
   loadCharts(data:string, analysis:string){
