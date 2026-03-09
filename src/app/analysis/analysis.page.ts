@@ -6,6 +6,7 @@ import { catchError, Observable, throwError, timeout } from 'rxjs';
 import { TypeaheadService } from '../services/typeahead.service';
 import { SharedDataService } from "../services/SharedDataService.service";
 import { HttpClient } from '@angular/common/http';
+import { LoadingController } from '@ionic/angular';
 
 declare var window:any;
 
@@ -139,7 +140,8 @@ export class analysisPage{
 			private formBuilder: FormBuilder, 
 			private typeahead: TypeaheadService, 
 			private sharedservice: SharedDataService, 
-			private http: HttpClient) {
+			private http: HttpClient,
+      private loadingController: LoadingController) {
     this.createForm();
     this.form.patchValue({'selectedCancer': this.expressionCancers[0].id});
   }
@@ -185,7 +187,7 @@ export class analysisPage{
   }
 
   // search button
-  searchClicked(){
+  async searchClicked(){
     let gene = this.form.get('selectedGene')?.value?.name;
     if(!gene){
       return;
@@ -208,18 +210,25 @@ export class analysisPage{
 
 	  let apiUrl = `https://ualcan.path.uab.edu/cgi-bin/${api}?genenam=${gene}&ctype=${cancer}`;
 
-    if (window.plugins?.spinnerDialog) {
-      window.plugins.spinnerDialog.show(null, "Loading...", true);
-    }
+    const loading = await this.loadingController.create({
+      message: 'Loading...',
+      spinner: "lines",
+      duration: 30000
+    });
+
+    // SHow the spinner
+    await loading.present();
+
+    // Allow the UI thread to show the spinner
+    await setTimeout(() => {}, 1000)
     
     try
     {
 		  this.http.get(apiUrl)
         .pipe(timeout(20000),
-          catchError(err => {
-            if (window.plugins?.spinnerDialog) {
-              window.plugins.spinnerDialog.hide();
-            }
+          catchError(async err => {
+            // Don't for get to hide the spinner
+            await loading.dismiss();
             
             // LOGIC: Translate the error type
             let finalMessage = 'An unknown error occurred';
@@ -234,11 +243,11 @@ export class analysisPage{
             return throwError(() => new Error(finalMessage));
           }))
         .subscribe({
-          next: (response) => {
-            if (window.plugins?.spinnerDialog) {
-              window.plugins.spinnerDialog.hide();
-            }
-            if(response===null || response===undefined || JSON.stringify(response)=="{}"){
+          next: async (response) => {
+            // Don't for get to hide the spinner
+            await loading.dismiss();
+            if
+            (response===null || response===undefined || JSON.stringify(response)=="{}"){
               alert(`No data for ${gene} and ${cancer}`);
             }else{
               this.sharedservice.data = JSON.stringify(response);
@@ -248,10 +257,9 @@ export class analysisPage{
               this.router.navigate(['PlotComponent']);
             } 
           },
-          error: (err) => {
-            if (window.plugins?.spinnerDialog) {
-              window.plugins.spinnerDialog.hide();
-            }
+          error: async (err) => {
+            // Don't for get to hide the spinner
+            await loading.dismiss();
 
             alert(`UALCAN API Error1: ${err.message}
   Please try again.
@@ -273,9 +281,8 @@ export class analysisPage{
     }
     catch(ex)
     {
-      if (window.plugins?.spinnerDialog) {
-        window.plugins.spinnerDialog.hide();
-      }
+      // Don't for get to hide the spinner
+      await loading.dismiss();
 
       alert(`UALCAN API Error2:
 Please try again.
