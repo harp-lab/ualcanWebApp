@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Signal, signal, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, signal, ElementRef, ViewChild } from '@angular/core';
 import { SharedDataService } from "../services/SharedDataService.service";
 import { PDFGenerator } from '@awesome-cordova-plugins/pdf-generator/ngx';
 import Highcharts from 'highcharts';
