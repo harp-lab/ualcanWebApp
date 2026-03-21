@@ -2,13 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ICancer } from '../cancer.interface';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { catchError, Observable, throwError, timeout } from 'rxjs';
+import { catchError, Observable, throwError, timeout, of } from 'rxjs';
 import { TypeaheadService } from '../services/typeahead.service';
 import { SharedDataService } from "../services/SharedDataService.service";
 import { HttpClient } from '@angular/common/http';
 import { LoadingController } from '@ionic/angular';
-
-declare var window:any;
 
 @Component({
   selector: 'app-analysis',
@@ -18,27 +16,17 @@ declare var window:any;
 })
 export class analysisPage{
 
-  //service to send the response
   // auto complete
   form: FormGroup;
   genes: Observable<string[]>;
   isTesting: boolean = false;
 
-  createForm() {
-    this.form = this.formBuilder.group({
-      selectedGene: [],
-      selectedCancer:[],
-      selectedAnalysis: ['expression']
-    });
-  }
-  
-  getGeneName(event:any) {
-    let analysis = this.form.get('selectedAnalysis').value;
-    let cancer = this.form.get('selectedCancer').value;
-    this.genes = this.typeahead.getGene(event.target.value, analysis, cancer);
-  }
+  public analyses = [
+    { id: 'expression', name: 'Expression' },
+    { id: 'methylation', name: 'Methylation' },
+    { id: 'proteomics', name: 'Proteomics' }
+  ];
 
-  // dropdown list
   public expressionCancers: Array<ICancer> = [
     {id:"PAN-CANCER", name:"Pan-cancer"},
     {id:"ACC", name:"Adrenocortical carcinoma"},
@@ -143,7 +131,38 @@ export class analysisPage{
 			private http: HttpClient,
       private loadingController: LoadingController) {
     this.createForm();
-    this.form.patchValue({'selectedCancer': this.expressionCancers[0].id});
+  }
+
+  get cancers() {
+    const analysis = this.form.get('selectedAnalysis')?.value;
+
+    if (analysis === 'proteomics') {
+      return this.proteomicCancers;
+    }
+
+    if (analysis === 'methylation') {
+      return this.methylationCancers;
+    }
+
+    return this.expressionCancers;
+  }
+
+  createForm() {
+    this.form = this.formBuilder.group({
+      selectedGene: [],
+      selectedCancer:[this.expressionCancers[0].id],
+      selectedAnalysis: ['expression']
+    });
+  }
+  
+  getGenes(event:any) {
+    let analysis = this.form.get('selectedAnalysis').value;
+    let cancer = this.form.get('selectedCancer').value;
+    if(event.target.value == ""){
+      this.genes = of<string[]>([]);
+    }else{
+      this.genes = this.typeahead.getGene(event.target.value, analysis, cancer);
+    }
   }
 
   // cancer input
@@ -151,9 +170,13 @@ export class analysisPage{
     let analysis = this.form.get('selectedAnalysis').value;
     let gene = this.form.get('selectedGene')?.value?.name;
     let cancer = ev.target.value;
-    // When the analysis changes query the typeahead service for the current gene if it is set
-    this.genes = this.typeahead.getGene(gene, analysis, cancer);
-    // Clear out the gene if it doesn't exists for the selected analysis
+    // When the cancer changes query the typeahead service for the current gene if it is set
+    if(gene == ""){
+      this.genes = of<string[]>([]);
+    }else{
+      this.genes = this.typeahead.getGene(gene, analysis, cancer);
+    }
+    // Clear out the gene if it doesn't exists for the selected cancer
     this.genes.subscribe((genes:string[]) => {
         if(genes.length == 0){
             this.form.patchValue({'selectedGene': ""});
@@ -162,22 +185,21 @@ export class analysisPage{
   }
 
   // analysis inputs
-  analysisChanged(ev) {
-    let analysis = ev.target.value;
+  analysisChanged(analysis: string) {
     let gene = this.form.get('selectedGene')?.value?.name;
     let cancer = this.form.get('selectedCancer').value;
-    let cancers = analysis == "proteomics" 
-                  ? this.proteomicCancers 
-                  : analysis == "methylation" 
-                    ? this.methylationCancers 
-                    : this.expressionCancers;
-    if(cancer == "" || !cancers.some(x => x.id == cancer)){
+    if(cancer == "" || !this.cancers.some(x => x.id == cancer)){
         // Preselect the first cancer so that a gene can be selected
-        cancer = cancers[0].id;
+        cancer = this.cancers[0].id;
+        console.log(cancer)
         this.form.patchValue({'selectedCancer': cancer});
     }
     // When the analysis changes query the typeahead service for the current gene if it is set
-    this.genes = this.typeahead.getGene(gene, analysis, cancer);
+    if(gene == ""){
+      this.genes = of<string[]>([]);
+    }else{
+      this.genes = this.typeahead.getGene(gene, analysis, cancer);
+    }
     // Clear out the gene if it doesn't exists for the selected analysis
     this.genes.subscribe((genes:string[]) => {
         if(genes.length == 0){

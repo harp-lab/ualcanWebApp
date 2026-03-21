@@ -1,5 +1,5 @@
 <app-header></app-header>
-<ion-content id="containervalue" class="content">
+<ion-content class="content">
   <ion-card class="citation-card">
     <form [formGroup]="form">
       <div id="container" >
@@ -7,38 +7,45 @@
           <ion-item lines="none">
             <div class="dropdownContainer">
               <ion-label>Cancer</ion-label>
-              <select class="dropdown" formControlName="selectedCancer" (change)="cancerChanged($event)">
-                @let analysis = form.get('selectedAnalysis')?.value;
-                @for (cancer of (analysis == 'proteomics' 
-                                  ? proteomicCancers 
-                                  : (analysis == 'methylation' 
-                                    ? methylationCancers 
-                                    : expressionCancers)); track cancer.id)
-                {
-                  <option value="{{cancer.id}}">{{cancer.name}}</option>
-                }
-              </select>
+              <ng-select class="dropdown" 
+                        [items]="cancers"
+                        bindLabel="name"
+                        bindValue="id"
+                        [clearable]="false"
+                        [searchable]="false"
+                        formControlName="selectedCancer"
+                        appendTo="body"
+                        (change)="cancerChanged($event.id)">
+              </ng-select>
             </div>
           </ion-item>
           <ion-item lines="none">
             <div class="dropdownContainer">
               <ion-label>Gene</ion-label>
-              <ng-select class="dropdown" [items]="genes | async" bindLabel="name"
-                        formControlName="selectedGene" notFoundText="No records found"
+              <ng-select class="dropdown" 
+                        [items]="genes | async" 
+                        bindLabel="name"
+                        formControlName="selectedGene" 
+                        notFoundText="No records found"
                         [multiple]="false"
-                        appendTo="#containervalue"
-                        (keyup)="getGeneName($event)">
+                        appendTo="body"
+                        (keyup)="getGenes($event)">
               </ng-select>
             </div>
           </ion-item>
           <ion-item lines="none">
             <div class="dropdownContainer">
               <ion-label>Analysis</ion-label>
-              <select class="dropdown" formControlName="selectedAnalysis" (change)="analysisChanged($event)">
-                <option value="expression">Expression</option>
-                <option value="methylation">Methylation</option>
-                <option value="proteomics">Proteomics</option>
-              </select>
+              <ng-select class="dropdown" 
+                        [items]="analyses"
+                        bindLabel="name"
+                        bindValue="id"
+                        [clearable]="false"
+                        [searchable]="false"
+                        formControlName="selectedAnalysis"
+                        appendTo="body"
+                        (change)="analysisChanged($event.id)">
+              </ng-select>
             </div>
           </ion-item>
         </ion-list>
