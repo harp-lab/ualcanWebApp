@@ -135,6 +135,14 @@ export class PlotComponent implements OnInit, AfterViewInit {
 
       return `${g}-${a}-${c}-${timestamp}`;
   }
+
+  getSharingMessage(): string{
+    let g = this.sharedservice.gene.toLowerCase();
+    let c = this.sharedservice.cancer.toLowerCase();
+    let a = this.sharedservice.analysis.toLowerCase();
+
+      return `${g} ${a} ${c}`;
+  }
   
   // pdf generator //
   downloadHighchart() {
@@ -218,7 +226,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
 
   shareChart(imgData) {
     (window as any).plugins?.socialsharing.share(
-        'Check out this chart!',
+        this.getSharingMessage(),
         this.getFilename(),
         imgData,
         null
@@ -419,7 +427,7 @@ export class PlotComponent implements OnInit, AfterViewInit {
               onclick: () => {
                   this.downloadHighchart();
               },
-              text: 'Export PDF'
+              text: 'Save PDF'
             },
             back: {
               onclick: () => {
