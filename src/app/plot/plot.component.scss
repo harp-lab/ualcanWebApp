@@ -9,7 +9,7 @@
 .title-header {
   --background: white;
   border: 1px solid #144B39;
-  min-height: var(--ion-safe-area-top);
+  min-height: var(--ion-safe-area-top, 0px);
   padding-bottom: 5px;
 }
 
@@ -42,7 +42,7 @@
 }
   
 .boxPlot:fullscreen {
-  padding-top: var(--ion-safe-area-top);
+  padding-top: var(--ion-safe-area-top, 0px);
 }
 
 html, body {

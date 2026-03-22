@@ -58,4 +58,6 @@ p{
 
 .content {
   --background: #144B391F;
+  --padding-start: var(--ion-safe-area-left, 0px);
+  --padding-end: var(--ion-safe-area-right, 0px);
 }

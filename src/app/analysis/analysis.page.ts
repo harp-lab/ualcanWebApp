@@ -246,6 +246,19 @@ export class analysisPage{
     
     try
     {
+      this.isTesting = false;
+      if (this.isTesting) { 
+          // we are testing, so set some test data
+          this.sharedservice.data = cancer === 'PAN-CANCER' 
+                                    ? this.sharedservice.panCancerTestData
+                                    : this.sharedservice.testData;
+          this.sharedservice.analysis = analysis;
+          this.sharedservice.gene = gene;
+          this.sharedservice.cancer = cancer;
+          await loading.dismiss();
+          this.router.navigate(['PlotComponent']);
+          return;
+      }
 		  this.http.get(apiUrl)
         .pipe(timeout(20000),
           catchError(async err => {
@@ -287,17 +300,6 @@ export class analysisPage{
   Please try again.
   If the problem persists,
   please contact support.`);
-          this.isTesting = false;
-          if (this.isTesting) { 
-              // we are testing, so set some test data
-              this.sharedservice.data = cancer === 'PAN-CANCER' 
-                                        ? this.sharedservice.panCancerTestData
-                                        : this.sharedservice.testData;
-              this.sharedservice.analysis = analysis;
-              this.sharedservice.gene = gene;
-              this.sharedservice.cancer = cancer;
-              this.router.navigate(['PlotComponent']);
-            }
           }
 		  });
     }

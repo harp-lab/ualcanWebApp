@@ -328,6 +328,10 @@ export class PlotComponent implements OnInit, AfterViewInit {
         lineColor: 'black',
         labels: {
           style: { fontSize: plotData.length > 5 ? '0.5em' :'0.6em'},
+          formatter: function () {
+            // Hide (n=xxx) on x-axis labels 
+            return this.value.toString().split('<br>')[0]
+          }
         },
         title: {
           text: `${dataset} samples`,
@@ -394,16 +398,8 @@ export class PlotComponent implements OnInit, AfterViewInit {
           condition: {
             maxHeight: 400
           },
-          // Make the labels less space demanding on mobile
+          // Don't show y-axis extremes on mobile 
           chartOptions: {
-            xAxis: {
-              labels: {
-                formatter: function () {
-                  return this.value.toString().split('<br>')[0]
-                  //this.value.toString().split('<br>')[1].replace('(','').replace(')','');
-                }
-              }
-            },
             yAxis: {
               max: q3Max + ((highMax - q3Max) / 10)
             }
