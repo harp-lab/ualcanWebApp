@@ -25,7 +25,9 @@ native mobile applications.
 <img src="docs/screenshots/analysis.png" width="30%" />
 
 ### Data Visualization
-<img src="docs/screenshots/plot.png" width="70%" />
+<img src="docs/screenshots/plot1.png" width="30%" />
+
+<img src="docs/screenshots/plot2.png" width="70%" />
 
 ### PDF Export
 <img src="docs/screenshots/export.png" width="30%" />
