@@ -4,9 +4,10 @@ import { ICancer } from '../cancer.interface';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, Observable, throwError, timeout, of } from 'rxjs';
 import { TypeaheadService } from '../services/typeahead.service';
-import { SharedDataService } from "../services/SharedDataService.service";
+import { SharedDataService } from "../services/shareddata.service";
 import { HttpClient } from '@angular/common/http';
 import { LoadingController } from '@ionic/angular';
+import { ApiLoadTestService } from '../services/apiloadtest.service';
 
 @Component({
   selector: 'app-analysis',
@@ -128,6 +129,7 @@ export class analysisPage{
 			private formBuilder: FormBuilder, 
 			private typeahead: TypeaheadService, 
 			private sharedservice: SharedDataService, 
+      private apiloadtest: ApiLoadTestService,
 			private http: HttpClient,
       private loadingController: LoadingController) {
     this.createForm();
@@ -211,7 +213,6 @@ export class analysisPage{
 
   // search button
   async searchClicked(){
-    
     let gene = this.form.get('selectedGene')?.value?.name;
     if(!gene){
       return;
@@ -327,138 +328,34 @@ please contact support.`);
 
     await loading.present();
 
-    const startAll = performance.now();
-
-    const results: any[] = [];
-    let completed = 0;
-
-    const analyses = this.analyses.map(a => a.id);
-    const genes = ['TP53', 'EGFR', 'BRCA1', 'BRCA2', 'MYC', 'PTEN'];
-
-    const getRandom = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
-
-    const buildUrl = (analysis: string, gene: string, cancer: string) => {
-      let api = '';
-      switch (analysis) {
-        case 'expression':
-          api = 'ualcan-gene-json.pl';
-          break;
-        case 'methylation':
-          api = 'ualcan-methyl-json.pl';
-          break;
-        case 'proteomics':
-          api = 'ualcan-CPTAC-json.pl';
-          break;
-      }
-
-      return `https://ualcan.path.uab.edu/cgi-bin/${api}?genenam=${gene}&ctype=${cancer}`;
-    };
-
-    const getRandomCancer = (analysis: string) => {
-      if (analysis === 'proteomics') {
-        return getRandom(this.proteomicCancers).id;
-      }
-      if (analysis === 'methylation') {
-        return getRandom(this.methylationCancers).id;
-      }
-      return getRandom(this.expressionCancers).id;
-    };
-
-    const promises = Array.from({ length: totalCalls }, async (_, i) => {
-      const callNumber = i + 1;
-
-      const analysis = getRandom(analyses);
-      const gene = getRandom(genes);
-      const cancer = getRandomCancer(analysis);
-
-      const url = buildUrl(analysis, gene, cancer);
-
-      const start = performance.now();
-
-      try {
-        const response = await this.http.get(url).pipe(timeout(20000)).toPromise();
-
-        const elapsed = Math.round(performance.now() - start);
-
-        results.push({
-          callNumber,
-          analysis,
-          gene,
-          cancer,
-          success: true,
-          elapsed
-        });
-      } catch (err: any) {
-        const elapsed = Math.round(performance.now() - start);
-
-        results.push({
-          callNumber,
-          analysis,
-          gene,
-          cancer,
-          success: false,
-          elapsed,
-          error: err?.message || 'error'
-        });
-      }
-
-      completed++;
-
-      // 🔥 UPDATE SPINNER MESSAGE LIVE
-      loading.message = `Running API Test...
-  ${completed}/${totalCalls} complete`;
-    });
-
-    await Promise.all(promises);
-
-    const totalElapsed = Math.round(performance.now() - startAll);
-
-    await loading.dismiss();
-
-    // Build report
-    const times = results.map(r => r.elapsed);
-
-    const avg = Math.round(
-      times.reduce((sum, t) => sum + t, 0) / times.length
-    );
-
-    const minTime = Math.min(...times);
-    const maxTime = Math.max(...times);
-
-    // Optional: find which calls produced them
-    const minCall = results.find(r => r.elapsed === minTime);
-    const maxCall = results.find(r => r.elapsed === maxTime);
-
-    let csv = 'CallNumber,Analysis,Cancer,Gene,Success,ElapsedMs,Error\n';
-
-    results
-      .sort((a, b) => a.callNumber - b.callNumber)
-      .forEach(r => {
-        csv += [
-          r.callNumber,
-          r.analysis,
-          r.cancer,
-          r.gene,
-          r.success,
-          r.elapsed,
-          r.error ? `"${r.error.replace(/"/g, '""')}"` : ''
-        ].join(',') + '\n';
+    try {
+      const result = await this.apiloadtest.runTest({
+        totalCalls,
+        analyses: this.analyses.map(a => a.id),
+        expressionCancers: this.expressionCancers,
+        methylationCancers: this.methylationCancers,
+        proteomicCancers: this.proteomicCancers,
+        timeoutMs: 20000,
+        onProgress: (completed, total) => {
+          loading.message = `Running API Test...
+  ${completed}/${total} complete`;
+        }
       });
 
-    csv += '\n';
-    csv += `SUMMARY,,,,,,\n`;
-    csv += `Total Calls,${results.length}\n`;
-    csv += `Average (ms),${avg}\n`;
-    csv += `Min (ms),${minTime},Call ${minCall?.callNumber}\n`;
-    csv += `Max (ms),${maxTime},Call ${maxCall?.callNumber}\n`;
-    csv += `Total Time (ms),${totalElapsed}\n`;
+      await loading.dismiss();
 
-    (window as any).plugins?.socialsharing.share(
-      csv,                         // message
-      'UALCAN API Load Test Results', // subject
-      null,                           // file (optional)
-      null                            // url (optional)
-    );
+      (window as any).plugins?.socialsharing.share(
+        result.csv,
+        'UALCAN API Load Test Results',
+        null,
+        null
+      );
+    } catch (err: any) {
+      await loading.dismiss();
+
+      alert(`API Load Test Error:
+  ${err?.message || 'Unknown error'}`);
+    }
   }
   
 }
